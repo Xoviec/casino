@@ -50,8 +50,8 @@ function App({client}) {
 
       const dataFromServer = JSON.parse(message.data)
       // console.log(dataFromServer)
-      // console.log('Typ:', dataFromServer.type)
-      // console.log('odpowiedz:', dataFromServer.msg)
+      console.log('Typ:', dataFromServer.type)
+      console.log('odpowiedz:', dataFromServer.msg)
   
   
       if(dataFromServer.type==='roulette-message-object'){
@@ -194,34 +194,21 @@ function App({client}) {
 
   return (
     <div className="App">
-      <Chatbar numberList={numberList} userID={userID} ref={ref} handleShareNumber={handleShareNumber}/>
-        {/* <div  className='chat'>
-            {numberList.map((number) => (
-              <div ref={ref} key={number} className={`${number.userID===userID ? 'user' : 'stranger'} single-message`}>
-                <p className='message-user-id'>{number.userID}</p>
-                <p className='message-content'>{number.number}</p>
-              </div>
-            ))}
-        </div> */}
-        {/* <button onClick={handleSendMessage}>Wyślij</button> */}
-        <button onClick={handleSendProba}>Próba</button>
-     
-          {/* <form onSubmit={handleShareNumber}>
-            <input type="text" name='number' autoComplete="off" placeholder='...'/>
-            <button type='submit' >Wyślij wiadomość</button>
-          </form> */}
-          <p>{userID}</p>
-          <p>Stan konta: {balance}</p>
-          <p>{`${rouletteStage === 0 ? 'Betowanie włączone' : rouletteStage === 1 ? 'Bety wstrzymane' : 'Resetowanie...'}`}</p>
-          <div className={`betting ${isBettable ? `bettable` : "bettablent"}`}></div>
-          <input type="number" placeholder='kwota' onChange={getBetValue} />
-          <div className='placed-bets-container'>
-            <Bets color='Red' placeBet={placeBet} placedBets={placedBets}/>
-            <Bets color='Green' placeBet={placeBet} placedBets={placedBets}/>
-            <Bets color='Black' placeBet={placeBet}  placedBets={placedBets}/>
-          </div>
-    
-
+      <div className='chat'>
+        <Chatbar numberList={numberList} userID={userID} ref={ref} handleShareNumber={handleShareNumber}/>
+      </div>
+      <div className="main-container">
+        <p>{userID}</p>
+        <p>Stan konta: {balance}</p>
+        <p>{`${rouletteStage === 0 ? 'Betowanie włączone' : rouletteStage === 1 ? 'Bety wstrzymane' : 'Resetowanie...'}`}</p>
+        <div className={`betting ${isBettable ? `bettable` : "bettablent"}`}></div>
+        <input type="number" placeholder='kwota' onChange={getBetValue} />
+        <div className='placed-bets-container'>
+          <Bets color='Red' placeBet={placeBet} placedBets={placedBets}/>
+          <Bets color='Green' placeBet={placeBet} placedBets={placedBets}/>
+          <Bets color='Black' placeBet={placeBet}  placedBets={placedBets}/>
+        </div>
+      </div>
     </div>
   );
 }

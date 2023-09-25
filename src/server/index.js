@@ -63,10 +63,13 @@ wsServer.on('request', function(request){
 
     const betReady = () =>{
         isBettable = true
+        console.log('xd')
         if (connection.connected) {
             connection.ping();
             for(let key in clients){
+                if(key===userId){
                     clients[key].send(JSON.stringify(betReadyMessageObject))
+                }
             }
         }
         setTimeout(betDisable, 10_000);
@@ -78,7 +81,9 @@ wsServer.on('request', function(request){
         if (connection.connected) {
             connection.ping();
             for(let key in clients){
+                if(key===userId){
                     clients[key].send(JSON.stringify(betDisabledMessageObject))
+                }
             }
         }
         setTimeout(betReset, 5000);
@@ -89,7 +94,9 @@ wsServer.on('request', function(request){
         if (connection.connected) {
             connection.ping();
             for(let key in clients){
+                if(key===userId){
                     clients[key].send(JSON.stringify(betResetMessageObject))
+                }
             }
         }
         setTimeout(betReady, 5000);
@@ -101,9 +108,7 @@ wsServer.on('request', function(request){
             for(let key in clients){
                 if(key===userId){
                     clients[key].send(JSON.stringify(messageObject))
-
                 }
-
             }
         } else {
             clearInterval(pingInterval);
@@ -145,5 +150,8 @@ wsServer.on('request', function(request){
 
         }
     })
+    connection.on('close', function(reasonCode, description) {
+        console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');
+    });
 })
 
