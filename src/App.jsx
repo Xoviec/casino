@@ -42,6 +42,7 @@ function App({client}) {
 
     socket.on("roulette-status", (data)=>{
       console.log(data)
+      setRouletteStage(data.stage)
     })
 
     socket.on("receive_message", (data) =>{
@@ -52,6 +53,15 @@ function App({client}) {
     });
   }, [socket])
 
+
+  useEffect(()=>{
+    if(rouletteStage === 1){
+      setIsBettable(false)
+    }
+    else{
+      setIsBettable(true)
+    }
+  },[rouletteStage])
   // client.onopen = () =>{
   //   console.log(client)
   // }
@@ -220,7 +230,7 @@ function App({client}) {
       <div className="main-container">
         <button onClick={sendMessage}>Send message from {userID}</button>
         <p>Stan konta: {balance}</p>
-        <p>{`${rouletteStage === 0 ? 'Betowanie włączone' : rouletteStage === 1 ? 'Bety wstrzymane' : 'Resetowanie...'}`}</p>
+        <p>{`${rouletteStage === 0 ? 'Betowanie włączone' : rouletteStage === 1 ? 'Bety wstrzymane' : 'Resetowanie...'} stage: ${rouletteStage}`}</p>
         <div className={`betting ${isBettable ? `bettable` : "bettablent"}`}></div>
         <input type="number" placeholder='kwota' onChange={getBetValue} />
         <div className='placed-bets-container'>

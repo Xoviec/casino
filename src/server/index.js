@@ -59,19 +59,35 @@ io.on("connection", (socket) => {
 });
 
 
+const betReadyMessageObject = {
+  msg: 'Betowanie włączone',
+  stage: 0
+}
+
+const betDisabledMessageObject = {
+  msg: 'Betowanie wyłączone',
+  stage: 1
+}
+
+const betResetMessageObject = {
+  msg: 'Resetowanie...',
+  stage: 2
+}
+
+
 const betReady = () =>{
   isBettable = true
-  io.emit("roulette-status", "Włączenie betowania na 5 sekund")
+  io.emit("roulette-status", betReadyMessageObject)
   setTimeout(betDisable, 5000)
 }
 const betDisable = () =>{
   isBettable = false
-  io.emit("roulette-status", "Zablokowanie betów na 5 sekund")
+  io.emit("roulette-status", betDisabledMessageObject)
   setTimeout(betReset, 5000)
 }
 const betReset = () =>{
   isBettable = false
-  io.emit("roulette-status", "Resetowanie...")
+  io.emit("roulette-status", betResetMessageObject)
   setTimeout(betReady, 5000)
 }
 
