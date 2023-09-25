@@ -1,21 +1,23 @@
 import logo from './logo.svg';
 import './App.css';
-import { w3cwebsocket as w3cwebsocket } from 'websocket';
 import { useEffect, useState, useRef, Component } from 'react';
 import React from 'react';
 import { Bets } from './components/Bets';
 import { Chatbar } from './components/Chatbar';
-
-
+const { io } = require("socket.io-client");
+const socket  = io.connect("http://localhost:8000")
 
 
 function App({client}) {
+
+
+ 
 
   const ref = useRef()
 
 
   const [numberList, setNumberList] = useState([])
-  const [userID, setUserID] = useState(0)
+  const [userID, setUserID] = useState()
   const [isBettable, setIsBettable] = useState(true)
   const [rouletteStage, setRouletteStage] = useState(0)
   const [balance, setBalance] = useState(1000)
@@ -31,64 +33,82 @@ function App({client}) {
 
   const [placedBets, setPlacedBets] = useState([])
 
-
-  client.onopen = () =>{
-    console.log(client)
+  const sendMessage = () =>{
+    socket.emit("send_message", {message: "Hello"})
   }
 
+
   useEffect(()=>{
-    ref.current?.scrollIntoView({block:"nearest", behavior:"smooth"})
-  }, [numberList])
+
+    socket.on("roulette-status", (data)=>{
+      console.log(data)
+    })
+
+    socket.on("receive_message", (data) =>{
+      console.log(data)
+    })
+    socket.on("connect", () => {
+      setUserID(socket.id)
+    });
+  }, [socket])
+
+  // client.onopen = () =>{
+  //   console.log(client)
+  // }
+
+  // useEffect(()=>{
+  //   ref.current?.scrollIntoView({block:"nearest", behavior:"smooth"})
+  // }, [numberList])
 
 
   
 
-  useEffect(() => {
+  // useEffect(() => {
 
 
-    client.onmessage = (message) =>{
+  //   client.onmessage = (message) =>{
 
-      const dataFromServer = JSON.parse(message.data)
-      // console.log(dataFromServer)
-      console.log('Typ:', dataFromServer.type)
-      console.log('odpowiedz:', dataFromServer.msg)
+  //     const dataFromServer = JSON.parse(message.data)
+  //     // console.log(dataFromServer)
+  //     console.log('Typ:', dataFromServer.type)
+  //     console.log('odpowiedz:', dataFromServer.msg)
   
   
-      if(dataFromServer.type==='roulette-message-object'){
-        switch(dataFromServer.stage){
-          default:setRouletteStage(0) 
-                  setIsBettable(true)
-                  break
-          case 1: setRouletteStage(1)
-                  setIsBettable(false) //false ma być
-                  break
-          case 2: setRouletteStage(2)
-                  setBetedColor('')
-                  setBettedValue(0)
-                  const updatePlayerBetObject = {...playerBetObject}
-                  updatePlayerBetObject.Red = 0
-                  updatePlayerBetObject.Black = 0
-                  updatePlayerBetObject.Green = 0
-                  setPlayerBetObject(updatePlayerBetObject)
-                  setPlacedBets([])
-                  break
-        }
-      }
+  //     if(dataFromServer.type==='roulette-message-object'){
+  //       switch(dataFromServer.stage){
+  //         default:setRouletteStage(0) 
+  //                 setIsBettable(true)
+  //                 break
+  //         case 1: setRouletteStage(1)
+  //                 setIsBettable(false) //false ma być
+  //                 break
+  //         case 2: setRouletteStage(2)
+  //                 setBetedColor('')
+  //                 setBettedValue(0)
+  //                 const updatePlayerBetObject = {...playerBetObject}
+  //                 updatePlayerBetObject.Red = 0
+  //                 updatePlayerBetObject.Black = 0
+  //                 updatePlayerBetObject.Green = 0
+  //                 setPlayerBetObject(updatePlayerBetObject)
+  //                 setPlacedBets([])
+  //                 break
+  //       }
+  //     }
 
-      if(dataFromServer.type === 'share-number'){
-        handleAddNumber(dataFromServer.msg, dataFromServer.userID)
-      }
+  //     if(dataFromServer.type === 'share-number'){
+  //       handleAddNumber(dataFromServer.msg, dataFromServer.userID)
+  //     }
   
-      if(dataFromServer.type === 'setUserID'){
-        setUserID(dataFromServer.msg)
-      }
-      if(dataFromServer.type === 'send-player-bet'){
-        handleUpdatePlacedBets(dataFromServer.userID, dataFromServer.bets)
-      }
+  //     if(dataFromServer.type === 'setUserID'){
+  //       setUserID(dataFromServer.msg)
+  //     }
+  //     if(dataFromServer.type === 'send-player-bet'){
+  //       handleUpdatePlacedBets(dataFromServer.userID, dataFromServer.bets)
+  //     }
 
-    }
+  //   }
   
-  }, []);
+  // }, []);
 
 
   const handleUpdatePlacedBets = (userID, bets) => {
@@ -198,7 +218,7 @@ function App({client}) {
         <Chatbar numberList={numberList} userID={userID} ref={ref} handleShareNumber={handleShareNumber}/>
       </div>
       <div className="main-container">
-        <p>{userID}</p>
+        <button onClick={sendMessage}>Send message from {userID}</button>
         <p>Stan konta: {balance}</p>
         <p>{`${rouletteStage === 0 ? 'Betowanie włączone' : rouletteStage === 1 ? 'Bety wstrzymane' : 'Resetowanie...'}`}</p>
         <div className={`betting ${isBettable ? `bettable` : "bettablent"}`}></div>
