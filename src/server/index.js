@@ -54,7 +54,7 @@ io.on("connection", (socket) => {
 
   socket.on("send_message", (data)=>{
     console.log(data)
-    socket.broadcast.emit("receive_message", socket.id)
+    io.emit("receive_chat_message", data) //wysyła do każdego
   })
 });
 

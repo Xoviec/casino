@@ -33,25 +33,56 @@ function App({client}) {
 
   const [placedBets, setPlacedBets] = useState([])
 
-  const sendMessage = () =>{
-    socket.emit("send_message", {message: "Hello"})
+  const handleShareNumber = (event) =>{
+
+    const message = event.target.number.value
+
+    socket.emit("send_message", {
+      message: message,
+      userID: userID
+    })
+
+    event.preventDefault()
+    event.target.number.value = ''
   }
 
+//
+// const handleShareNumber = (event) =>{
 
-  useEffect(()=>{
+//   const number = event.target.number.value
+//   client.send(JSON.stringify({
+//     type: 'share-number',
+//     msg: number,
+//     userID: userID
+//   }))  
+//   event.preventDefault()
+//   event.target.number.value = ''
+// }
 
-    socket.on("roulette-status", (data)=>{
-      console.log(data)
-      setRouletteStage(data.stage)
-    })
+//
 
-    socket.on("receive_message", (data) =>{
-      console.log(data)
-    })
+  // useEffect(()=>{
+
+
+
+    
     socket.on("connect", () => {
       setUserID(socket.id)
+
+
+      socket.on("roulette-status", (data)=>{
+        console.log(data)
+        setRouletteStage(data.stage)
+      })
+
+
+      socket.on("receive_chat_message", (data) =>{
+        console.log(data)
+        handleAddNumber(data.message, data.userID)
+      })
+   
     });
-  }, [socket])
+  // }, [socket])
 
 
   useEffect(()=>{
@@ -156,13 +187,6 @@ function App({client}) {
       return newNumbers; // Zwróć nowy stan jako wynik funkcji setState
     });
   }
-  
-  const handleSendMessage = () =>{
-    client.send(JSON.stringify({
-      type: 'message',
-      msg: 'halko xd'
-    }))  
-  }
 
   const handleSendProba = () =>{
     client.send(JSON.stringify({
@@ -171,17 +195,17 @@ function App({client}) {
     }))  
   }
 
-  const handleShareNumber = (event) =>{
+  // const handleShareNumber = (event) =>{
 
-    const number = event.target.number.value
-    client.send(JSON.stringify({
-      type: 'share-number',
-      msg: number,
-      userID: userID
-    }))  
-    event.preventDefault()
-    event.target.number.value = ''
-  }
+  //   const number = event.target.number.value
+  //   client.send(JSON.stringify({
+  //     type: 'share-number',
+  //     msg: number,
+  //     userID: userID
+  //   }))  
+  //   event.preventDefault()
+  //   event.target.number.value = ''
+  // }
 
   const increaseID = () =>{
     let x = userID + 1
@@ -228,7 +252,7 @@ function App({client}) {
         <Chatbar numberList={numberList} userID={userID} ref={ref} handleShareNumber={handleShareNumber}/>
       </div>
       <div className="main-container">
-        <button onClick={sendMessage}>Send message from {userID}</button>
+        {/* <button onClick={sendMessage}>Send message from {userID}</button> */}
         <p>Stan konta: {balance}</p>
         <p>{`${rouletteStage === 0 ? 'Betowanie włączone' : rouletteStage === 1 ? 'Bety wstrzymane' : 'Resetowanie...'} stage: ${rouletteStage}`}</p>
         <div className={`betting ${isBettable ? `bettable` : "bettablent"}`}></div>
