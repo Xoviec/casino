@@ -56,6 +56,14 @@ io.on("connection", (socket) => {
     console.log(data)
     io.emit("receive_chat_message", data) //wysyła do każdego
   })
+
+
+  socket.on("send_player_bet", (data)=>{
+    console.log(data)
+    io.emit("receive_player_bet", data) //wysyła do każdego
+  })
+
+  
 });
 
 

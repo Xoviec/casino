@@ -46,25 +46,8 @@ function App({client}) {
     event.target.number.value = ''
   }
 
-//
-// const handleShareNumber = (event) =>{
 
-//   const number = event.target.number.value
-//   client.send(JSON.stringify({
-//     type: 'share-number',
-//     msg: number,
-//     userID: userID
-//   }))  
-//   event.preventDefault()
-//   event.target.number.value = ''
-// }
-
-//
-
-  // useEffect(()=>{
-
-
-
+//odbieranie 
     
     socket.on("connect", () => {
       setUserID(socket.id)
@@ -73,6 +56,25 @@ function App({client}) {
       socket.on("roulette-status", (data)=>{
         console.log(data)
         setRouletteStage(data.stage)
+        
+        switch(data.stage){
+          default:setRouletteStage(0) 
+                  setIsBettable(true)
+                  break
+          case 1: setRouletteStage(1)
+                  setIsBettable(false) //false ma być
+                  break
+          case 2: setRouletteStage(2)
+                  setBetedColor('')
+                  setBettedValue(0)
+                  const updatePlayerBetObject = {...playerBetObject}
+                  updatePlayerBetObject.Red = 0
+                  updatePlayerBetObject.Black = 0
+                  updatePlayerBetObject.Green = 0
+                  setPlayerBetObject(updatePlayerBetObject)
+                  setPlacedBets([])
+                  break
+        }
       })
 
 
@@ -80,19 +82,43 @@ function App({client}) {
         console.log(data)
         handleAddNumber(data.message, data.userID)
       })
-   
+
+      socket.on("receive_player_bet", (data) =>{
+        console.log(data)
+        handleUpdatePlacedBets(data.userID, data.bets)
+      })
     });
-  // }, [socket])
 
 
-  useEffect(()=>{
-    if(rouletteStage === 1){
-      setIsBettable(false)
-    }
-    else{
-      setIsBettable(true)
-    }
-  },[rouletteStage])
+  // useEffect(()=>{
+
+  //   // 0 -> można betować
+  //   // 1 -> losowanie
+  //   // 2 -> resetowanie
+
+  //   if(rouletteStage === 1){
+  //     setIsBettable(false)
+  //   }
+  //   if(rouletteStage === 2){
+  //     setIsBettable(false)
+  //     setRouletteStage(2)
+  //     setBetedColor('')
+  //     setBettedValue(0)
+  //     const updatePlayerBetObject = {...playerBetObject}
+  //     updatePlayerBetObject.Red = 0
+  //     updatePlayerBetObject.Black = 0
+  //     updatePlayerBetObject.Green = 0
+  //     setPlayerBetObject(updatePlayerBetObject)
+  //     setPlacedBets([])
+
+  //   }
+  //   else{
+  //     setIsBettable(true)
+  //   }
+
+
+  //   console.log(isBettable)
+  // },[rouletteStage])
   // client.onopen = () =>{
   //   console.log(client)
   // }
@@ -220,23 +246,26 @@ function App({client}) {
 
   const placeBet = (e) =>{
     
-    setBettedValue((prev)=> prev + betInputValue)
-    setBetedColor(e.target.name)
-    const color = e.target.name
-    console.log(playerBetObject)
-    const updatePlayerBetObject = {...playerBetObject}
-    updatePlayerBetObject[color] = updatePlayerBetObject[color] + betInputValue ;
+    if(isBettable){
+      setBettedValue((prev)=> prev + betInputValue)
+      setBetedColor(e.target.name)
+      const color = e.target.name
+      console.log(playerBetObject)
+      const updatePlayerBetObject = {...playerBetObject}
+      updatePlayerBetObject[color] = updatePlayerBetObject[color] + betInputValue ;
+  
+      socket.emit('send_player_bet', {
+        userID: userID,
+        bets:{
+          ...updatePlayerBetObject
+        }
+      })
+  
+  
+      setPlayerBetObject(updatePlayerBetObject)
+    }
 
 
-    client.send(JSON.stringify({
-      type: 'send-player-bet',
-      userID: userID,
-      bets:{
-        ...updatePlayerBetObject
-      }
-    }))  
-
-    setPlayerBetObject(updatePlayerBetObject)
 
   }
 
