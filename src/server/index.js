@@ -20,6 +20,10 @@ const io = new Server(server, {
 let isBettable = true
 
 
+const getRandomSpin = () =>{
+  return Math.floor(Math.random()*910) + 1
+}
+
 
 
 io.on("connection", (socket) => {
@@ -83,17 +87,18 @@ const betResetMessageObject = {
 }
 
 
-const betReady = () =>{
+const betReady = () =>{ //stage 0
   isBettable = true
   io.emit("roulette-status", betReadyMessageObject)
   setTimeout(betDisable, 5000)
 }
-const betDisable = () =>{
+const betDisable = () =>{ //stage 1
   isBettable = false
-  io.emit("roulette-status", betDisabledMessageObject)
-  setTimeout(betReset, 5000)
+  const spinVal = getRandomSpin()
+  io.emit("roulette-status", {...betDisabledMessageObject, spin: spinVal})
+  setTimeout(betReset, 10000)
 }
-const betReset = () =>{
+const betReset = () =>{ //stage 2
   isBettable = false
   io.emit("roulette-status", betResetMessageObject)
   setTimeout(betReady, 5000)

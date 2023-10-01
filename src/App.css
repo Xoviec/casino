@@ -157,6 +157,12 @@
   color: #252525;
 }
 
+.main-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .betting{
   width: 100%;
   height: 3rem;
@@ -240,4 +246,35 @@
   border-bottom: 0;
 }
 
+.roulette-container{
+  position: relative;
+  background-color: rebeccapurple;
+  width: 560px;
+  height: 70px;
+}
 
+.controller{
+  position: absolute;
+  left: 50%;
+  height: 120%;
+  top: -10%;
+  width: 2px;
+  background-color: white;
+  z-index: 2;
+}
+
+.roulette{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 560px;
+  height: 70px;
+  overflow: hidden;
+  background: url('./images/ruletka.png') 0 0 repeat;
+  background-position: 35px;
+  transition: 5s;
+
+  /* transition-timing-function: cubic-bezier(.44,.93,.18,.86); */
+  transition-timing-function: cubic-bezier(0.12, 1.02, 1, 0.99);
+  
+}

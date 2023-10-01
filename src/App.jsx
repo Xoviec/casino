@@ -24,6 +24,9 @@ function App({client}) {
   const [betInputValue, setBetInputValue] = useState(0)
   const [bettedValue, setBettedValue] = useState(0)
   const [betedColor, setBetedColor] = useState('')
+  const [spingDegree, setSpinDegree] = useState()
+  const [bgPos, setBgPos] = useState(35)
+  const [actuallBet, setActuallBet] = useState()
 
   const [playerBetObject, setPlayerBetObject] = useState({
     Red: 0,
@@ -32,6 +35,119 @@ function App({client}) {
   })
 
   const [placedBets, setPlacedBets] = useState([])
+
+
+  const bets=[
+    {
+      number: 9,
+      color: 'red',
+    },
+    {
+      number: 6,
+      color: 'black',
+    },
+    {
+      number: 7,
+      color: 'red',
+    },
+    {
+      number: 8,
+      color: 'black',
+    },
+    {
+      number: 5,
+      color: 'red',
+    },
+    {
+      number: 10,
+      color: 'black',
+    },
+    {
+      number: 3,
+      color: 'red',
+    },
+    {
+      number: 12,
+      color: 'black',
+    },
+    {
+      number: 1,
+      color: 'red',
+    },
+    {
+      number: 13,
+      color: 'green',
+    },
+    {
+      number: 2,
+      color: 'black',
+    },
+    {
+      number: 11,
+      color: 'red',
+    },
+    {
+      number: 4,
+      color: 'black',
+    },
+  ]
+
+
+  const spin = () =>{
+
+
+    // const spin = value
+
+    console.log('obrót:', spin)
+
+    let newBet;
+
+    switch (true) {
+      case spin >= 0 && spin < 70:
+        setActuallBet(bets[1].number);
+        break;
+      case spin >= 70 && spin < 140:
+        setActuallBet(bets[2].number);
+        break;
+      case spin >= 140 && spin < 210:
+        setActuallBet(bets[3].number);
+        break;
+      case spin >= 210 && spin < 280:
+        setActuallBet(bets[4].number);
+        break;
+      case spin >= 280 && spin < 350:
+        setActuallBet(bets[5].number);
+        break;
+      case spin >= 350 && spin < 420:
+        setActuallBet(bets[6].number);
+        break;
+      case spin >= 420 && spin < 490:
+        setActuallBet(bets[7].number);
+        break;
+      case spin >= 490 && spin < 560:
+        setActuallBet(bets[8].number);
+        break;
+      case spin >= 560 && spin < 630:
+        setActuallBet(bets[9].number);
+        break;
+      case spin >= 630 && spin < 700:
+        setActuallBet(bets[10].number);
+        break;
+      case spin >= 700 && spin < 770:
+        setActuallBet(bets[11].number);
+        break;
+      case spin >= 770 && spin < 840:
+        setActuallBet(bets[12].number);
+        break;
+      case spin >= 840:
+        setActuallBet(bets[0].number);
+        break;
+      default:
+        setActuallBet(null); // Opcjo)nalnie, jeśli nie ma pasującego zakresu
+        break;
+    }
+  }
+
 
   const handleShareNumber = (event) =>{
 
@@ -56,15 +172,62 @@ function App({client}) {
       socket.on("roulette-status", (data)=>{
         console.log(data)
         setRouletteStage(data.stage)
-        
+
         switch(data.stage){
           default:setRouletteStage(0) 
                   setIsBettable(true)
                   break
           case 1: setRouletteStage(1)
                   setIsBettable(false) //false ma być
+                  setSpinDegree(data.spin)
+                  setBgPos((data.spin)+910*5)
+                  switch (true) {
+                    case data.spin >= 0 && data.spin < 70:
+                      setActuallBet(bets[1].number);
+                      break;
+                    case data.spin >= 70 && data.spin < 140:
+                      setActuallBet(bets[2].number);
+                      break;
+                    case data.spin >= 140 && data.spin < 210:
+                      setActuallBet(bets[3].number);
+                      break;
+                    case data.spin >= 210 && data.spin < 280:
+                      setActuallBet(bets[4].number);
+                      break;
+                    case data.spin >= 280 && data.spin < 350:
+                      setActuallBet(bets[5].number);
+                      break;
+                    case data.spin >= 350 && data.spin < 420:
+                      setActuallBet(bets[6].number);
+                      break;
+                    case data.spin >= 420 && data.spin < 490:
+                      setActuallBet(bets[7].number);
+                      break;
+                    case data.spin >= 490 && data.spin < 560:
+                      setActuallBet(bets[8].number);
+                      break;
+                    case data.spin >= 560 && data.spin < 630:
+                      setActuallBet(bets[9].number);
+                      break;
+                    case data.spin >= 630 && data.spin < 700:
+                      setActuallBet(bets[10].number);
+                      break;
+                    case data.spin >= 700 && data.spin < 770:
+                      setActuallBet(bets[11].number);
+                      break;
+                    case data.spin >= 770 && data.spin < 840:
+                      setActuallBet(bets[12].number);
+                      break;
+                    case data.spin >= 840:
+                      setActuallBet(bets[0].number);
+                      break;
+                    default:
+                      setActuallBet(null); // Opcjo)nalnie, jeśli nie ma pasującego zakresu
+                      break;
+                  }
                   break
           case 2: setRouletteStage(2)
+                  setSpinDegree(0)
                   setBetedColor('')
                   setBettedValue(0)
                   const updatePlayerBetObject = {...playerBetObject}
@@ -73,6 +236,7 @@ function App({client}) {
                   updatePlayerBetObject.Green = 0
                   setPlayerBetObject(updatePlayerBetObject)
                   setPlacedBets([])
+                  setBgPos(35)
                   break
         }
       })
@@ -284,6 +448,19 @@ function App({client}) {
         {/* <button onClick={sendMessage}>Send message from {userID}</button> */}
         <p>Stan konta: {balance}</p>
         <p>{`${rouletteStage === 0 ? 'Betowanie włączone' : rouletteStage === 1 ? 'Bety wstrzymane' : 'Resetowanie...'} stage: ${rouletteStage}`}</p>
+        <p>Obrót o: {spingDegree}</p>
+        <p>Numerek: {actuallBet}</p>
+        <div className="roulette-container">
+          <div className="controller"/>
+          <div
+              style={{
+                backgroundPosition: '-' + bgPos + 'px',
+                transition: rouletteStage === 1 ? '5s' : '0.4s', // Używamy operatora trójargumentowego
+              }}
+              className="roulette"
+            />
+        </div>
+   
         <div className={`betting ${isBettable ? `bettable` : "bettablent"}`}></div>
         <input type="number" placeholder='kwota' onChange={getBetValue} />
         <div className='placed-bets-container'>
