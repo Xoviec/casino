@@ -178,7 +178,7 @@ function App({client}) {
                   setIsBettable(true)
                   break
           case 1: setRouletteStage(1)
-                  setIsBettable(false) //false ma być
+                  setIsBettable(true) //false ma być
                   setSpinDegree(data.spin)
                   setBgPos((data.spin)+910*5)
                   switch (true) {
@@ -226,18 +226,18 @@ function App({client}) {
                       break;
                   }
                   break
-          case 2: setRouletteStage(2)
-                  setSpinDegree(0)
-                  setBetedColor('')
-                  setBettedValue(0)
-                  const updatePlayerBetObject = {...playerBetObject}
-                  updatePlayerBetObject.Red = 0
-                  updatePlayerBetObject.Black = 0
-                  updatePlayerBetObject.Green = 0
-                  setPlayerBetObject(updatePlayerBetObject)
-                  setPlacedBets([])
-                  setBgPos(35)
-                  break
+          // case 2: setRouletteStage(2)
+          //         setSpinDegree(0)
+          //         setBetedColor('')
+          //         setBettedValue(0)
+          //         const updatePlayerBetObject = {...playerBetObject}
+          //         updatePlayerBetObject.Red = 0
+          //         updatePlayerBetObject.Black = 0
+          //         updatePlayerBetObject.Green = 0
+          //         setPlayerBetObject(updatePlayerBetObject)
+          //         setPlacedBets([])
+          //         setBgPos(35)
+          //         break
         }
       })
 
@@ -464,9 +464,9 @@ function App({client}) {
         <div className={`betting ${isBettable ? `bettable` : "bettablent"}`}></div>
         <input type="number" placeholder='kwota' onChange={getBetValue} />
         <div className='placed-bets-container'>
-          <Bets color='Red' placeBet={placeBet} placedBets={placedBets}/>
-          <Bets color='Green' placeBet={placeBet} placedBets={placedBets}/>
-          <Bets color='Black' placeBet={placeBet}  placedBets={placedBets}/>
+          <Bets color='Red' placeBet={placeBet} isBettable={isBettable} placedBets={placedBets}/>
+          <Bets color='Green' placeBet={placeBet} isBettable={isBettable} placedBets={placedBets}/>
+          <Bets color='Black' placeBet={placeBet} isBettable={isBettable}  placedBets={placedBets}/>
         </div>
       </div>
     </div>
