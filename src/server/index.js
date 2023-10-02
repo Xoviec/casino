@@ -26,34 +26,37 @@ const getRandomSpin = () =>{
 
 
 
+let placedBets = []
+
+
+function updatePlacedBets(betObj) {
+  const existingBetIndex = placedBets.findIndex(betDetails => betDetails.userID === betObj.userID);
+
+  if (existingBetIndex !== -1) {
+    // Jeśli użytkownik istnieje w placedBets, zaktualizuj jego bets za pomocą Object.assign()
+    const updatedBet = Object.assign({}, placedBets[existingBetIndex], betObj);
+    placedBets[existingBetIndex] = updatedBet;
+  } else {
+    // Jeśli użytkownik nie istnieje w placedBets, dodaj nowy obiekt
+    placedBets.push(betObj);
+  }
+}
+
+
+
 io.on("connection", (socket) => {
 
+  io.emit("get_previous_bets", { placedBets, isBettable }); // do każdego idzie
 
-  // const betReady = () =>{
-  //   isBettable = true
-  //   socket.broadcast.emit("roulette-status", "Włączenie betowania na 5 sekund")
-  //   setTimeout(betDisable, 5000)
-  // }
-  // const betDisable = () =>{
-  //   isBettable = false
-  //   socket.broadcast.emit("roulette-status", "Zablokowanie betów na 5 sekund")
-  //   setTimeout(betReset, 5000)
-  // }
-  // const betReset = () =>{
-  //   isBettable = false
-  //   socket.broadcast.emit("roulette-status", "Resetowanie...")
-  //   setTimeout(betReady, 5000)
-  // }
 
-  
+  socket.on("disconnect", () => {
+    console.log('User', socket.id, 'has disconnected'); // false
+  });
 
 
 
   console.log("user connected", socket.id)
 
-  // const interval = setInterval(() => {
-  //   socket.emit('receive_message', 'To jest wiadomość co 5 sekund dla gracza: ' );
-  // }, 1000);
 
 
   socket.on("send_message", (data)=>{
@@ -63,7 +66,9 @@ io.on("connection", (socket) => {
 
 
   socket.on("send_player_bet", (data)=>{
+
     console.log(data)
+    updatePlacedBets(data)
     io.emit("receive_player_bet", data) //wysyła do każdego
   })
 
@@ -102,9 +107,13 @@ const betReset = () =>{ //stage 2
   isBettable = false
   io.emit("roulette-status", betResetMessageObject)
   setTimeout(betReady, 5000)
+  placedBets = []
 }
 
 betReady()
+
+
+
 
 server.listen(8000, ()=>{
     console.log("server is running")

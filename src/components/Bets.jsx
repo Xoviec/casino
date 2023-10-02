@@ -28,28 +28,28 @@ export const Bets = ({color, placedBets, placeBet, isBettable}) =>{
                     </p>
                 </div>
             </label>
-            <div className="bet-info">
-                <p>
-                     {betsPerColor.length} Bets Total
-                </p>
-                <p>
-                    {totalBetColorSum}$
-                </p>
-            </div>
-            {
-                // betsPerColor > 0 && 
+            <div className="bet-bottom-border">
+                <div className="bet-info ">
+                    <p>
+                        {betsPerColor.length} Bets Total
+                    </p>
+                    <p>
+                        {totalBetColorSum}$
+                    </p>
+                </div>
                 <div className="bet-section">
-                {
-                    placedBets?.map((player)=>(
-                        player.bets[color] > 0 &&
-                        <div className="single-bet">
-                            <p>{player.userID}</p>
-                            <p>{player.bets[color]}$</p>
-                        </div>
-                    ))
-                }
+                    {
+                        placedBets?.map((player)=>(
+                            player.bets[color] > 0 &&
+                            <div className="single-bet">
+                                <p>{player.userID}</p>
+                                <p>{player.bets[color]}$</p>
+                            </div>
+                        ))
+                    }
+                </div>
             </div>
-            }
+
     
         </div>
     )

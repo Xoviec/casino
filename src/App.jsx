@@ -40,114 +40,57 @@ function App({client}) {
   const bets=[
     {
       number: 9,
-      color: 'red',
+      color: 'Red',
     },
     {
       number: 6,
-      color: 'black',
+      color: 'Black',
     },
     {
       number: 7,
-      color: 'red',
+      color: 'Red',
     },
     {
       number: 8,
-      color: 'black',
+      color: 'Black',
     },
     {
       number: 5,
-      color: 'red',
+      color: 'Red',
     },
     {
       number: 10,
-      color: 'black',
+      color: 'Black',
     },
     {
       number: 3,
-      color: 'red',
+      color: 'Red',
     },
     {
       number: 12,
-      color: 'black',
+      color: 'Black',
     },
     {
       number: 1,
-      color: 'red',
+      color: 'Red',
     },
     {
       number: 13,
-      color: 'green',
+      color: 'Green',
     },
     {
       number: 2,
-      color: 'black',
+      color: 'Black',
     },
     {
       number: 11,
-      color: 'red',
+      color: 'Red',
     },
     {
       number: 4,
-      color: 'black',
+      color: 'Black',
     },
   ]
-
-
-  const spin = () =>{
-
-
-    // const spin = value
-
-    console.log('obrót:', spin)
-
-    let newBet;
-
-    switch (true) {
-      case spin >= 0 && spin < 70:
-        setActuallBet(bets[1].number);
-        break;
-      case spin >= 70 && spin < 140:
-        setActuallBet(bets[2].number);
-        break;
-      case spin >= 140 && spin < 210:
-        setActuallBet(bets[3].number);
-        break;
-      case spin >= 210 && spin < 280:
-        setActuallBet(bets[4].number);
-        break;
-      case spin >= 280 && spin < 350:
-        setActuallBet(bets[5].number);
-        break;
-      case spin >= 350 && spin < 420:
-        setActuallBet(bets[6].number);
-        break;
-      case spin >= 420 && spin < 490:
-        setActuallBet(bets[7].number);
-        break;
-      case spin >= 490 && spin < 560:
-        setActuallBet(bets[8].number);
-        break;
-      case spin >= 560 && spin < 630:
-        setActuallBet(bets[9].number);
-        break;
-      case spin >= 630 && spin < 700:
-        setActuallBet(bets[10].number);
-        break;
-      case spin >= 700 && spin < 770:
-        setActuallBet(bets[11].number);
-        break;
-      case spin >= 770 && spin < 840:
-        setActuallBet(bets[12].number);
-        break;
-      case spin >= 840:
-        setActuallBet(bets[0].number);
-        break;
-      default:
-        setActuallBet(null); // Opcjo)nalnie, jeśli nie ma pasującego zakresu
-        break;
-    }
-  }
-
 
   const handleShareNumber = (event) =>{
 
@@ -162,184 +105,137 @@ function App({client}) {
     event.target.number.value = ''
   }
 
+  // useEffect(()=>{
+  //   console.log(actuallBet)
+
+  //   const bet = bets.find(bet => bet.number === actuallBet)
+    
+  //   console.log(bet?.color)
+
+  //   console.log(playerBetObject)
+
+  //   console.log(playerBetObject[bet])
+   
+
+
+
+
+  //   if(bet && playerBetObject[bet.color] > 0){
+  //     console.log('Gratulacje wygranej, wygrywasz',(playerBetObject[bet.color]*2))
+  //     setBalance(balance+(playerBetObject[bet.color]*2))
+  //   }
+
+  //   console.log(bet?.color)
+  // }, [actuallBet])
+
+
+
 
 //odbieranie 
+
     
-    socket.on("connect", () => {
-      setUserID(socket.id)
+  socket.on("connect", () => {
+    setUserID(socket.id)
 
 
-      socket.on("roulette-status", (data)=>{
-        console.log(data)
-        setRouletteStage(data.stage)
+    socket.on("get_previous_bets", (data) =>{
+      // console.log(data)
+      setPlacedBets(data.placedBets)
+      setIsBettable(data.isBettable)
+    })
 
-        switch(data.stage){
-          default:setRouletteStage(0) 
-                  setIsBettable(true)
-                  break
-          case 1: setRouletteStage(1)
-                  setIsBettable(true) //false ma być
-                  setSpinDegree(data.spin)
-                  setBgPos((data.spin)+910*5)
-                  switch (true) {
-                    case data.spin >= 0 && data.spin < 70:
-                      setActuallBet(bets[1].number);
-                      break;
-                    case data.spin >= 70 && data.spin < 140:
-                      setActuallBet(bets[2].number);
-                      break;
-                    case data.spin >= 140 && data.spin < 210:
-                      setActuallBet(bets[3].number);
-                      break;
-                    case data.spin >= 210 && data.spin < 280:
-                      setActuallBet(bets[4].number);
-                      break;
-                    case data.spin >= 280 && data.spin < 350:
-                      setActuallBet(bets[5].number);
-                      break;
-                    case data.spin >= 350 && data.spin < 420:
-                      setActuallBet(bets[6].number);
-                      break;
-                    case data.spin >= 420 && data.spin < 490:
-                      setActuallBet(bets[7].number);
-                      break;
-                    case data.spin >= 490 && data.spin < 560:
-                      setActuallBet(bets[8].number);
-                      break;
-                    case data.spin >= 560 && data.spin < 630:
-                      setActuallBet(bets[9].number);
-                      break;
-                    case data.spin >= 630 && data.spin < 700:
-                      setActuallBet(bets[10].number);
-                      break;
-                    case data.spin >= 700 && data.spin < 770:
-                      setActuallBet(bets[11].number);
-                      break;
-                    case data.spin >= 770 && data.spin < 840:
-                      setActuallBet(bets[12].number);
-                      break;
-                    case data.spin >= 840:
-                      setActuallBet(bets[0].number);
-                      break;
-                    default:
-                      setActuallBet(null); // Opcjo)nalnie, jeśli nie ma pasującego zakresu
-                      break;
-                  }
-                  break
-          // case 2: setRouletteStage(2)
-          //         setSpinDegree(0)
-          //         setBetedColor('')
-          //         setBettedValue(0)
-          //         const updatePlayerBetObject = {...playerBetObject}
-          //         updatePlayerBetObject.Red = 0
-          //         updatePlayerBetObject.Black = 0
-          //         updatePlayerBetObject.Green = 0
-          //         setPlayerBetObject(updatePlayerBetObject)
-          //         setPlacedBets([])
-          //         setBgPos(35)
-          //         break
-        }
-      })
+    socket.on("roulette-status", (data)=>{
+      console.log(data)
+      setRouletteStage(data.stage)
 
+      switch(data.stage){
+        default:setRouletteStage(0) 
+                setIsBettable(true)
+                break
+        case 1: setRouletteStage(1)
+                setIsBettable(false) //false ma być
+                setSpinDegree(data.spin)
+                setBgPos((data.spin)+910*5)
+                switch (true) {
+                  case data.spin >= 0 && data.spin < 70:
+                    setActuallBet(bets[1].number);
+                    break;
+                  case data.spin >= 70 && data.spin < 140:
+                    setActuallBet(bets[2].number);
+                    break;
+                  case data.spin >= 140 && data.spin < 210:
+                    setActuallBet(bets[3].number);
+                    break;
+                  case data.spin >= 210 && data.spin < 280:
+                    setActuallBet(bets[4].number);
+                    break;
+                  case data.spin >= 280 && data.spin < 350:
+                    setActuallBet(bets[5].number);
+                    break;
+                  case data.spin >= 350 && data.spin < 420:
+                    setActuallBet(bets[6].number);
+                    break;
+                  case data.spin >= 420 && data.spin < 490:
+                    setActuallBet(bets[7].number);
+                    break;
+                  case data.spin >= 490 && data.spin < 560:
+                    setActuallBet(bets[8].number);
+                    break;
+                  case data.spin >= 560 && data.spin < 630:
+                    setActuallBet(bets[9].number);
+                    break;
+                  case data.spin >= 630 && data.spin < 700:
+                    setActuallBet(bets[10].number);
+                    break;
+                  case data.spin >= 700 && data.spin < 770:
+                    setActuallBet(bets[11].number);
+                    break;
+                  case data.spin >= 770 && data.spin < 840:
+                    setActuallBet(bets[12].number);
+                    break;
+                  case data.spin >= 840:
+                    setActuallBet(bets[0].number);
+                    break;
+                  default:
+                    setActuallBet(null); // Opcjonalnie, jeśli nie ma pasującego zakresu
+                    break;
+                }
 
-      socket.on("receive_chat_message", (data) =>{
-        console.log(data)
-        handleAddNumber(data.message, data.userID)
-      })
-
-      socket.on("receive_player_bet", (data) =>{
-        console.log(data)
-        handleUpdatePlacedBets(data.userID, data.bets)
-      })
-    });
+                break
+        case 2: 
+                setRouletteStage(2)
+                setSpinDegree(0)
+                setBetedColor('')
+                setBettedValue(0)
+                const updatePlayerBetObject = {...playerBetObject}
+                updatePlayerBetObject.Red = 0
+                updatePlayerBetObject.Black = 0
+                updatePlayerBetObject.Green = 0
+                setPlayerBetObject(updatePlayerBetObject)
+                setPlacedBets([])
+                setBgPos(35)
+                break
+      }
+    })
 
 
-  // useEffect(()=>{
+    socket.on("receive_chat_message", (data) =>{
+      console.log(data)
+      handleAddNumber(data.message, data.userID)
+    })
 
-  //   // 0 -> można betować
-  //   // 1 -> losowanie
-  //   // 2 -> resetowanie
-
-  //   if(rouletteStage === 1){
-  //     setIsBettable(false)
-  //   }
-  //   if(rouletteStage === 2){
-  //     setIsBettable(false)
-  //     setRouletteStage(2)
-  //     setBetedColor('')
-  //     setBettedValue(0)
-  //     const updatePlayerBetObject = {...playerBetObject}
-  //     updatePlayerBetObject.Red = 0
-  //     updatePlayerBetObject.Black = 0
-  //     updatePlayerBetObject.Green = 0
-  //     setPlayerBetObject(updatePlayerBetObject)
-  //     setPlacedBets([])
-
-  //   }
-  //   else{
-  //     setIsBettable(true)
-  //   }
-
-
-  //   console.log(isBettable)
-  // },[rouletteStage])
-  // client.onopen = () =>{
-  //   console.log(client)
-  // }
-
-  // useEffect(()=>{
-  //   ref.current?.scrollIntoView({block:"nearest", behavior:"smooth"})
-  // }, [numberList])
-
+    socket.on("receive_player_bet", (data) =>{
+      console.log(data)
+      handleUpdatePlacedBets(data.userID, data.bets)
+    })
+  });
 
   
+  socket.on("disconnect", () => {
+    console.log('Disconnected from server'); 
+  });
 
-  // useEffect(() => {
 
-
-  //   client.onmessage = (message) =>{
-
-  //     const dataFromServer = JSON.parse(message.data)
-  //     // console.log(dataFromServer)
-  //     console.log('Typ:', dataFromServer.type)
-  //     console.log('odpowiedz:', dataFromServer.msg)
-  
-  
-  //     if(dataFromServer.type==='roulette-message-object'){
-  //       switch(dataFromServer.stage){
-  //         default:setRouletteStage(0) 
-  //                 setIsBettable(true)
-  //                 break
-  //         case 1: setRouletteStage(1)
-  //                 setIsBettable(false) //false ma być
-  //                 break
-  //         case 2: setRouletteStage(2)
-  //                 setBetedColor('')
-  //                 setBettedValue(0)
-  //                 const updatePlayerBetObject = {...playerBetObject}
-  //                 updatePlayerBetObject.Red = 0
-  //                 updatePlayerBetObject.Black = 0
-  //                 updatePlayerBetObject.Green = 0
-  //                 setPlayerBetObject(updatePlayerBetObject)
-  //                 setPlacedBets([])
-  //                 break
-  //       }
-  //     }
-
-  //     if(dataFromServer.type === 'share-number'){
-  //       handleAddNumber(dataFromServer.msg, dataFromServer.userID)
-  //     }
-  
-  //     if(dataFromServer.type === 'setUserID'){
-  //       setUserID(dataFromServer.msg)
-  //     }
-  //     if(dataFromServer.type === 'send-player-bet'){
-  //       handleUpdatePlacedBets(dataFromServer.userID, dataFromServer.bets)
-  //     }
-
-  //   }
-  
-  // }, []);
 
 
   const handleUpdatePlacedBets = (userID, bets) => {
@@ -378,30 +274,6 @@ function App({client}) {
     });
   }
 
-  const handleSendProba = () =>{
-    client.send(JSON.stringify({
-      type: 'proba',
-      msg: 'worczy?'
-    }))  
-  }
-
-  // const handleShareNumber = (event) =>{
-
-  //   const number = event.target.number.value
-  //   client.send(JSON.stringify({
-  //     type: 'share-number',
-  //     msg: number,
-  //     userID: userID
-  //   }))  
-  //   event.preventDefault()
-  //   event.target.number.value = ''
-  // }
-
-  const increaseID = () =>{
-    let x = userID + 1
-    setUserID(x)
-  }
-
 
   const getBetValue = (e) =>{
     console.log(e.target.value)
@@ -410,8 +282,10 @@ function App({client}) {
 
   const placeBet = (e) =>{
     
-    if(isBettable){
+    if(isBettable && (betInputValue <= balance)){
       setBettedValue((prev)=> prev + betInputValue)
+      setBalance((prev)=>prev-betInputValue)
+
       setBetedColor(e.target.name)
       const color = e.target.name
       console.log(playerBetObject)
@@ -428,15 +302,11 @@ function App({client}) {
   
       setPlayerBetObject(updatePlayerBetObject)
     }
-
-
-
   }
 
-
-  useEffect(()=>{
-    setBalance((prev)=>prev-betInputValue)
-  }, [bettedValue])
+  // useEffect(()=>{
+  //   setBalance((prev)=>prev-betInputValue)
+  // }, [bettedValue])
 
 
   return (
