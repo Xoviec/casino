@@ -27,6 +27,7 @@ function App({client}) {
   const [spingDegree, setSpinDegree] = useState()
   const [bgPos, setBgPos] = useState(35)
   const [actuallBet, setActuallBet] = useState()
+  const [winColor, setWinColor] = useState('')
 
   const [playerBetObject, setPlayerBetObject] = useState({
     Red: 0,
@@ -105,28 +106,23 @@ function App({client}) {
     event.target.number.value = ''
   }
 
-  // useEffect(()=>{
-  //   console.log(actuallBet)
+  useEffect(()=>{
 
-  //   const bet = bets.find(bet => bet.number === actuallBet)
-    
-  //   console.log(bet?.color)
+    const bet = bets.find(bet => bet.number === actuallBet)
 
-  //   console.log(playerBetObject)
+    setWinColor(bet?.color)
 
-  //   console.log(playerBetObject[bet])
-   
-
-
-
-
-  //   if(bet && playerBetObject[bet.color] > 0){
-  //     console.log('Gratulacje wygranej, wygrywasz',(playerBetObject[bet.color]*2))
-  //     setBalance(balance+(playerBetObject[bet.color]*2))
-  //   }
-
-  //   console.log(bet?.color)
-  // }, [actuallBet])
+    if(bet && playerBetObject[bet.color] > 0){
+      if(playerBetObject[bet.color]==='Green'){
+        console.log('Gratulacje wygranej, wygrywasz',(playerBetObject[bet.color]*14))
+        setBalance(balance+(playerBetObject[bet.color]*14))
+      }
+      else{
+        console.log('Gratulacje wygranej, wygrywasz',(playerBetObject[bet.color]*2))
+        setBalance(balance+(playerBetObject[bet.color]*2))
+      }
+    }
+  }, [actuallBet])
 
 
 
@@ -320,6 +316,7 @@ function App({client}) {
         <p>{`${rouletteStage === 0 ? 'Betowanie włączone' : rouletteStage === 1 ? 'Bety wstrzymane' : 'Resetowanie...'} stage: ${rouletteStage}`}</p>
         <p>Obrót o: {spingDegree}</p>
         <p>Numerek: {actuallBet}</p>
+        <p>Kolor: {winColor}</p>
         <div className="roulette-container">
           <div className="controller"/>
           <div
@@ -334,9 +331,9 @@ function App({client}) {
         <div className={`betting ${isBettable ? `bettable` : "bettablent"}`}></div>
         <input type="number" placeholder='kwota' onChange={getBetValue} />
         <div className='placed-bets-container'>
-          <Bets color='Red' placeBet={placeBet} isBettable={isBettable} placedBets={placedBets}/>
-          <Bets color='Green' placeBet={placeBet} isBettable={isBettable} placedBets={placedBets}/>
-          <Bets color='Black' placeBet={placeBet} isBettable={isBettable}  placedBets={placedBets}/>
+          <Bets color='Red' placeBet={placeBet} isBettable={isBettable} winColor={winColor} placedBets={placedBets}/>
+          <Bets color='Green' placeBet={placeBet} isBettable={isBettable} winColor={winColor} placedBets={placedBets}/>
+          <Bets color='Black' placeBet={placeBet} isBettable={isBettable} winColor={winColor} placedBets={placedBets}/>
         </div>
       </div>
     </div>

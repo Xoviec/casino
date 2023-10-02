@@ -1,4 +1,4 @@
-export const Bets = ({color, placedBets, placeBet, isBettable}) =>{
+export const Bets = ({color, placedBets, placeBet, isBettable, winColor}) =>{
 
 
 
@@ -17,9 +17,9 @@ export const Bets = ({color, placedBets, placeBet, isBettable}) =>{
 
     return(
         <div className="bet-container">
-            <button name={color} id={color} onClick={placeBet} className={`btn-hidden bet-color-header bet-header-${color}`}>{color}</button>
+            <button name={color} id={color} onClick={placeBet} className={`btn-hidden bet-color-header bet-header-${color} `}>{color}</button>
             <label htmlFor={color} name={color}>
-                <div  className={`bet-btn-main bet-header-${color} ${!isBettable && 'bets-closed' }`}>
+                <div  className={`bet-btn-main bet-header-${color} ${!isBettable && 'bets-closed' } ${winColor === color && `win-effect`}`}>
                     <p className="bet-place">
                         Place Bet
                     </p>
