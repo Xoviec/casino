@@ -225,7 +225,10 @@
   overflow: hidden;
   position: relative;
   border-radius: 0.4rem 0.4rem 0.3rem 0.3rem;
+  transition: 0.5s;
+
 }
+
 .bet-color-header{
   width: 100%;
   padding: 2rem;
@@ -259,14 +262,21 @@
   background-color: #545454;
 }
 
-.win-effect{
+/* .win-effect{
   background-color: goldenrod;
-}
+} */
 
 .bets-closed{
   filter: grayscale(50%);
   cursor: not-allowed;
 }
+
+.bet-container-winning{
+  scale: 1.1;
+  filter: grayscale(0%);
+  transition: 0.5s;
+}
+
 
 .bet-color-header{
   padding: 1.4rem;
@@ -314,6 +324,15 @@
   background-color: rebeccapurple;
   width: 560px;
   height: 70px;
+  transition: 0.3s;
+  opacity: 0.3;
+
+}
+
+.roulette-active{
+  /* filter: grayscale(50%); */
+  opacity: 1;
+
 }
 
 .controller{
@@ -361,3 +380,42 @@
   height: 100%;
   background: linear-gradient(270deg, rgba(48,48,48,1) 0%, rgba(36,37,56,0) 100%);
 }
+
+.input-box{
+  display: flex;
+  background-color: rgb(20 20 25);
+  border: 1px solid rgb(73, 76, 93);
+  border-radius: 5px;
+}
+
+.bet-input{
+  background-color: transparent;
+  border: none;
+  outline: none;
+  color: aliceblue;
+}
+
+.bet-input::placeholder{
+  color: rgb(86, 86, 86);
+}
+
+
+.coins{
+  width: 40px;
+  height: 40px;
+  background: url('./images/coins.svg') 0 0 no-repeat;
+}
+
+.balance-box{
+  display: flex;
+  align-items: center;
+  background-color: rgb(20 20 25);
+  border: 1px solid rgb(73, 76, 93);
+  border-radius: 5px;
+  padding: 0 15px 0 5px;  
+  color: goldenrod;
+  height: 2rem;
+}
+
+
+

@@ -26,8 +26,7 @@ function App({client}) {
   const [betedColor, setBetedColor] = useState('')
   const [spingDegree, setSpinDegree] = useState()
   const [bgPos, setBgPos] = useState(35)
-  const [winNumber, setWinNumber] = useState()
-  const [winColor, setWinColor] = useState('')
+  const [actuallBet, setActuallBet] = useState()
 
   const [playerBetObject, setPlayerBetObject] = useState({
     Red: 0,
@@ -38,8 +37,62 @@ function App({client}) {
   const [placedBets, setPlacedBets] = useState([])
 
 
-  const handleShareNumber = (event) =>{
+  const bets=[
+    {
+      number: 9,
+      color: 'Red',
+    },
+    {
+      number: 6,
+      color: 'Black',
+    },
+    {
+      number: 7,
+      color: 'Red',
+    },
+    {
+      number: 8,
+      color: 'Black',
+    },
+    {
+      number: 5,
+      color: 'Red',
+    },
+    {
+      number: 10,
+      color: 'Black',
+    },
+    {
+      number: 3,
+      color: 'Red',
+    },
+    {
+      number: 12,
+      color: 'Black',
+    },
+    {
+      number: 1,
+      color: 'Red',
+    },
+    {
+      number: 13,
+      color: 'Green',
+    },
+    {
+      number: 2,
+      color: 'Black',
+    },
+    {
+      number: 11,
+      color: 'Red',
+    },
+    {
+      number: 4,
+      color: 'Black',
+    },
+  ]
 
+  const handleShareNumber = (event) =>{
 
     const message = event.target.number.value
 
@@ -52,6 +105,31 @@ function App({client}) {
     event.target.number.value = ''
   }
 
+  // useEffect(()=>{
+  //   console.log(actuallBet)
+
+  //   const bet = bets.find(bet => bet.number === actuallBet)
+    
+  //   console.log(bet?.color)
+
+  //   console.log(playerBetObject)
+
+  //   console.log(playerBetObject[bet])
+   
+
+
+
+
+  //   if(bet && playerBetObject[bet.color] > 0){
+  //     console.log('Gratulacje wygranej, wygrywasz',(playerBetObject[bet.color]*2))
+  //     setBalance(balance+(playerBetObject[bet.color]*2))
+  //   }
+
+  //   console.log(bet?.color)
+  // }, [actuallBet])
+
+
+
 
 //odbieranie 
 
@@ -61,17 +139,9 @@ function App({client}) {
 
 
     socket.on("get_previous_bets", (data) =>{
+      // console.log(data)
       setPlacedBets(data.placedBets)
       setIsBettable(data.isBettable)
-      console.log('halo kurwa halo')
-    })
-
-
-    socket.on("bet-reveal", (data)=>{
-      console.log(data)
-
-      setWinColor(data.color)
-      setWinNumber(data.number)
     })
 
     socket.on("roulette-status", (data)=>{
@@ -82,18 +152,59 @@ function App({client}) {
         default:setRouletteStage(0) 
                 setIsBettable(true)
                 break
-        case 1: 
-                setRouletteStage(1)
+        case 1: setRouletteStage(1)
                 setIsBettable(false) //false ma być
                 setSpinDegree(data.spin)
                 setBgPos((data.spin)+910*5)
+                switch (true) {
+                  case data.spin >= 0 && data.spin < 70:
+                    setActuallBet(bets[1].number);
+                    break;
+                  case data.spin >= 70 && data.spin < 140:
+                    setActuallBet(bets[2].number);
+                    break;
+                  case data.spin >= 140 && data.spin < 210:
+                    setActuallBet(bets[3].number);
+                    break;
+                  case data.spin >= 210 && data.spin < 280:
+                    setActuallBet(bets[4].number);
+                    break;
+                  case data.spin >= 280 && data.spin < 350:
+                    setActuallBet(bets[5].number);
+                    break;
+                  case data.spin >= 350 && data.spin < 420:
+                    setActuallBet(bets[6].number);
+                    break;
+                  case data.spin >= 420 && data.spin < 490:
+                    setActuallBet(bets[7].number);
+                    break;
+                  case data.spin >= 490 && data.spin < 560:
+                    setActuallBet(bets[8].number);
+                    break;
+                  case data.spin >= 560 && data.spin < 630:
+                    setActuallBet(bets[9].number);
+                    break;
+                  case data.spin >= 630 && data.spin < 700:
+                    setActuallBet(bets[10].number);
+                    break;
+                  case data.spin >= 700 && data.spin < 770:
+                    setActuallBet(bets[11].number);
+                    break;
+                  case data.spin >= 770 && data.spin < 840:
+                    setActuallBet(bets[12].number);
+                    break;
+                  case data.spin >= 840:
+                    setActuallBet(bets[0].number);
+                    break;
+                  default:
+                    setActuallBet(null); // Opcjonalnie, jeśli nie ma pasującego zakresu
+                    break;
+                }
 
                 break
         case 2: 
                 setRouletteStage(2)
                 setSpinDegree(0)
-                setWinNumber()
-                setWinColor('')
                 setBetedColor('')
                 setBettedValue(0)
                 const updatePlayerBetObject = {...playerBetObject}
@@ -109,15 +220,12 @@ function App({client}) {
 
 
     socket.on("receive_chat_message", (data) =>{
-      console.log('galp')
       console.log(data)
       handleAddNumber(data.message, data.userID)
     })
 
     socket.on("receive_player_bet", (data) =>{
-      console.log('xdd')
       console.log(data)
-
       handleUpdatePlacedBets(data.userID, data.bets)
     })
   });
@@ -196,6 +304,11 @@ function App({client}) {
     }
   }
 
+  // useEffect(()=>{
+  //   setBalance((prev)=>prev-betInputValue)
+  // }, [bettedValue])
+
+
   return (
     <div className="App">
       <div className='chat'>
@@ -203,16 +316,11 @@ function App({client}) {
       </div>
       <div className="main-container">
         {/* <button onClick={sendMessage}>Send message from {userID}</button> */}
-        <p>{userID}</p>
-        <div className="balance-box">
-          <div className="coins"></div>
-          <p className='balance'>{balance}</p>
-        </div>
-        {/* <p>{`${rouletteStage === 0 ? 'Betowanie włączone' : rouletteStage === 1 ? 'Bety wstrzymane' : 'Resetowanie...'} stage: ${rouletteStage}`}</p>
+        <p>Stan konta: {balance}</p>
+        <p>{`${rouletteStage === 0 ? 'Betowanie włączone' : rouletteStage === 1 ? 'Bety wstrzymane' : 'Resetowanie...'} stage: ${rouletteStage}`}</p>
         <p>Obrót o: {spingDegree}</p>
-        <p>Numerek: {winNumber}</p>
-        <p>Kolor: {winColor}</p> */}
-        <div className={`roulette-container ${!isBettable && `roulette-active`}`}>
+        <p>Numerek: {actuallBet}</p>
+        <div className="roulette-container">
           <div className="controller"/>
           <div
               style={{
@@ -224,14 +332,11 @@ function App({client}) {
         </div>
    
         <div className={`betting ${isBettable ? `bettable` : "bettablent"}`}></div>
-        <div className="input-box">
-          <div className="coins"></div>
-          <input className='bet-input' type="number" placeholder='kwota' onChange={getBetValue} />
-        </div>
+        <input type="number" placeholder='kwota' onChange={getBetValue} />
         <div className='placed-bets-container'>
-          <Bets color='Red' placeBet={placeBet} isBettable={isBettable} winColor={winColor} placedBets={placedBets}/>
-          <Bets color='Green' placeBet={placeBet} isBettable={isBettable} winColor={winColor} placedBets={placedBets}/>
-          <Bets color='Black' placeBet={placeBet} isBettable={isBettable} winColor={winColor} placedBets={placedBets}/>
+          <Bets color='Red' placeBet={placeBet} isBettable={isBettable} placedBets={placedBets} winColor={winColor}/>
+          <Bets color='Green' placeBet={placeBet} isBettable={isBettable} placedBets={placedBets} winColor={winColor}/>
+          <Bets color='Black' placeBet={placeBet} isBettable={isBettable}  placedBets={placedBets} winColor={winColor}/>
         </div>
       </div>
     </div>

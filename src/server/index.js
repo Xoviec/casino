@@ -19,9 +19,97 @@ const io = new Server(server, {
 
 let isBettable = true
 
+const bets=[
+  {
+    number: 9,
+    color: 'Red',
+  },
+  {
+    number: 6,
+    color: 'Black',
+  },
+  {
+    number: 7,
+    color: 'Red',
+  },
+  {
+    number: 8,
+    color: 'Black',
+  },
+  {
+    number: 5,
+    color: 'Red',
+  },
+  {
+    number: 10,
+    color: 'Black',
+  },
+  {
+    number: 3,
+    color: 'Red',
+  },
+  {
+    number: 12,
+    color: 'Black',
+  },
+  {
+    number: 1,
+    color: 'Red',
+  },
+  {
+    number: 13,
+    color: 'Green',
+  },
+  {
+    number: 2,
+    color: 'Black',
+  },
+  {
+    number: 11,
+    color: 'Red',
+  },
+  {
+    number: 4,
+    color: 'Black',
+  },
+]
+
+const dupa = bets[0]
+
 
 const getRandomSpin = () =>{
-  return Math.floor(Math.random()*910) + 1
+  const spinVal = Math.floor(Math.random()*910) + 1
+
+
+  switch (true) {
+    case spinVal >= 0 && spinVal < 70:
+      return([bets[1], spinVal]);
+    case spinVal >= 70 && spinVal < 140:
+      return([bets[2], spinVal]);
+    case spinVal >= 140 && spinVal < 210:
+      return([bets[3], spinVal]);
+    case spinVal >= 210 && spinVal < 280:
+      return([bets[4], spinVal]);
+    case spinVal >= 280 && spinVal < 350:
+      return([bets[5], spinVal]);
+    case spinVal >= 350 && spinVal < 420:
+      return([bets[6], spinVal]);
+    case spinVal >= 420 && spinVal < 490:
+      return([bets[7], spinVal]);
+    case spinVal >= 490 && spinVal < 560:
+      return([bets[8], spinVal]);
+    case spinVal >= 560 && spinVal < 630:
+      return([bets[9], spinVal]);
+    case spinVal >= 630 && spinVal < 700:
+      return([bets[10], spinVal]);
+    case spinVal >= 700 && spinVal < 770:
+      return([bets[11], spinVal]);
+    case spinVal >= 770 && spinVal < 840:
+      return([bets[12], spinVal]);
+    case spinVal >= 840:
+      return([bets[0], spinVal]);
+
+  }
 }
 
 
@@ -99,14 +187,27 @@ const betReady = () =>{ //stage 0
 }
 const betDisable = () =>{ //stage 1
   isBettable = false
-  const spinVal = getRandomSpin()
-  io.emit("roulette-status", {...betDisabledMessageObject, spin: spinVal})
+  const betVal = getRandomSpin()
+
+  const spinColor = betVal[0].color
+  const spinNumber = betVal[0].number
+  const spinVal = betVal[1]
+
+  console.log('Kolor:', spinColor)
+  console.log('Number:', spinNumber)
+  console.log('Obrót o:', spinVal)
+  io.emit("roulette-status", {...betDisabledMessageObject, spin: spinVal, placedBets})
+  setTimeout(betReveal, 5000, spinColor, spinNumber)
   setTimeout(betReset, 10000)
+}
+const betReveal = (color, number) =>{
+  console.log(color, number)
+  io.emit("bet-reveal", {color: color, number: number})
 }
 const betReset = () =>{ //stage 2
   isBettable = false
   io.emit("roulette-status", betResetMessageObject)
-  setTimeout(betReady, 5000)
+  setTimeout(betReady, 1000)
   placedBets = []
 }
 
