@@ -202,7 +202,6 @@ function App({client}) {
         <Chatbar numberList={numberList} userID={userID} ref={ref} handleShareNumber={handleShareNumber}/>
       </div>
       <div className="main-container">
-        {/* <button onClick={sendMessage}>Send message from {userID}</button> */}
         <p>{userID}</p>
         <div className="balance-box">
           <div className="coins"></div>
