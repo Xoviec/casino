@@ -230,13 +230,9 @@ const getWinner = (color) =>{
     return [user.userID, user.bets[color] * multiplier];
   });
 
-  console.log("winnersi:", winners)
-
-  console.log("kurwa winersi z kaską więcej ", winnersID)
 
   io.emit("prize-win", winnersID)
 
-// coś poniej kurwa nie działą xD
 
 }
 

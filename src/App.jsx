@@ -228,10 +228,6 @@ function App({client}) {
           <p className='balance'>{balance}</p>
         </div>
 
-        {/* <p>{`${rouletteStage === 0 ? 'Betowanie włączone' : rouletteStage === 1 ? 'Bety wstrzymane' : 'Resetowanie...'} stage: ${rouletteStage}`}</p>
-        <p>Obrót o: {spingDegree}</p>
-        <p>Numerek: {winNumber}</p>
-        <p>Kolor: {winColor}</p> */}
         <div className={`roulette-container ${!isBettable && `roulette-active`}`}>
           <div className="controller"/>
           <div
