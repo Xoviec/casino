@@ -19,6 +19,8 @@ const io = new Server(server, {
 
 let isBettable = true
 
+let usersList = []
+
 const bets=[
   {
     number: 9,
@@ -134,6 +136,10 @@ function updatePlacedBets(betObj) {
 
 io.on("connection", (socket) => {
 
+  usersList.push(socket.id)
+
+  console.log(usersList)
+
   io.emit("get_previous_bets", { placedBets, isBettable }); // do każdego idzie
 
 
@@ -203,12 +209,35 @@ const betDisable = () =>{ //stage 1
 const betReveal = (color, number) =>{
   console.log(color, number)
   io.emit("bet-reveal", {color: color, number: number})
+  getWinner(color)
 }
 const betReset = () =>{ //stage 2
   isBettable = false
   io.emit("roulette-status", betResetMessageObject)
   setTimeout(betReady, 1000)
   placedBets = []
+}
+
+const getWinner = (color) =>{
+  console.log(placedBets)
+
+  const winners = placedBets.filter((player)=>player.bets[color] > 0)
+
+
+
+  const winnersID = winners.map((user) => {
+    let multiplier = color === 'Green' ? 14 : 2;
+    return [user.userID, user.bets[color] * multiplier];
+  });
+
+  console.log("winnersi:", winners)
+
+  console.log("kurwa winersi z kaską więcej ", winnersID)
+
+  io.emit("prize-win", winnersID)
+
+// coś poniej kurwa nie działą xD
+
 }
 
 betReady()

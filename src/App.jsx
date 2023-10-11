@@ -5,7 +5,7 @@ import React from 'react';
 import { Bets } from './components/Bets';
 import { Chatbar } from './components/Chatbar';
 const { io } = require("socket.io-client");
-const socket  = io.connect("http://localhost:8000")
+const socket  = io("http://localhost:8000")
 
 
 function App({client}) {
@@ -17,10 +17,11 @@ function App({client}) {
 
 
   const [numberList, setNumberList] = useState([])
-  const [userID, setUserID] = useState()
+  const [userID, setUserID] = useState('xd')
   const [isBettable, setIsBettable] = useState(true)
   const [rouletteStage, setRouletteStage] = useState(0)
   const [balance, setBalance] = useState(1000)
+  const balanceRef = useRef(balance)
   const [betInputValue, setBetInputValue] = useState(0)
   const [bettedValue, setBettedValue] = useState(0)
   const [betedColor, setBetedColor] = useState('')
@@ -57,13 +58,17 @@ function App({client}) {
 
     
   socket.on("connect", () => {
+
     setUserID(socket.id)
+
+
+
+
 
 
     socket.on("get_previous_bets", (data) =>{
       setPlacedBets(data.placedBets)
       setIsBettable(data.isBettable)
-      console.log('halo kurwa halo')
     })
 
 
@@ -108,8 +113,17 @@ function App({client}) {
     })
 
 
+    socket.on("prize-win", (data) =>{
+
+      const index = data.findIndex(item => item[0] === socket.id);
+
+      if(data[index]){
+        setBalance(balanceRef.current + data[index][1])
+      }
+
+    })
+
     socket.on("receive_chat_message", (data) =>{
-      console.log('galp')
       console.log(data)
       handleAddNumber(data.message, data.userID)
     })
@@ -123,10 +137,16 @@ function App({client}) {
   });
 
   
-  socket.on("disconnect", () => {
-    console.log('Disconnected from server'); 
-  });
+  // socket.on("disconnect", () => {
+  //   console.log('Disconnected from server'); 
+  // });
 
+
+
+
+  useEffect(()=>{
+    balanceRef.current = balance
+  },[balance])
 
 
 
@@ -207,6 +227,7 @@ function App({client}) {
           <div className="coins"></div>
           <p className='balance'>{balance}</p>
         </div>
+
         {/* <p>{`${rouletteStage === 0 ? 'Betowanie włączone' : rouletteStage === 1 ? 'Bety wstrzymane' : 'Resetowanie...'} stage: ${rouletteStage}`}</p>
         <p>Obrót o: {spingDegree}</p>
         <p>Numerek: {winNumber}</p>
