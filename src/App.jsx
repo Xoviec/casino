@@ -5,7 +5,7 @@ import React from 'react';
 import { Bets } from './components/Bets';
 import { Chatbar } from './components/Chatbar';
 const { io } = require("socket.io-client");
-const socket  = io("http://localhost:8000")
+const socket = io("http://localhost:8000")
 
 
 function App({client}) {
@@ -57,84 +57,164 @@ function App({client}) {
 //odbieranie 
 
     
-  socket.on("connect", () => {
+  // socket.on("connect", () => {
 
-    setUserID(socket.id)
-
-
+  //   setUserID(socket.id)
 
 
 
 
-    socket.on("get_previous_bets", (data) =>{
-      setPlacedBets(data.placedBets)
-      setIsBettable(data.isBettable)
-    })
+  useEffect(() => {
 
+    function onConnect(){
+      setUserID(socket.id)
+    }
 
-    socket.on("bet-reveal", (data)=>{
-      console.log(data)
-
-      setWinColor(data.color)
-      setWinNumber(data.number)
-    })
-
-    socket.on("roulette-status", (data)=>{
-      console.log(data)
-      setRouletteStage(data.stage)
-
-      switch(data.stage){
-        default:setRouletteStage(0) 
-                setIsBettable(true)
-                break
-        case 1: 
-                setRouletteStage(1)
-                setIsBettable(false) //false ma być
-                setSpinDegree(data.spin)
-                setBgPos((data.spin)+910*5)
-
-                break
-        case 2: 
-                setRouletteStage(2)
-                setSpinDegree(0)
-                setWinNumber()
-                setWinColor('')
-                setBetedColor('')
-                setBettedValue(0)
-                const updatePlayerBetObject = {...playerBetObject}
-                updatePlayerBetObject.Red = 0
-                updatePlayerBetObject.Black = 0
-                updatePlayerBetObject.Green = 0
-                setPlayerBetObject(updatePlayerBetObject)
-                setPlacedBets([])
-                setBgPos(35)
-                break
+    function handlePreviousBets(data) {
+      setPlacedBets(data.placedBets);
+      setIsBettable(data.isBettable);
+    }
+  
+    function handleBetReveal(data) {
+      setWinColor(data.color);
+      setWinNumber(data.number);
+    }
+  
+    function handleRouletteStatus(data) {
+      switch (data.stage) {
+        default:
+          setRouletteStage(0);
+          setIsBettable(true);
+          break;
+        case 1:
+          setRouletteStage(1);
+          setIsBettable(false);
+          setSpinDegree(data.spin);
+          setBgPos(data.spin + 910 * 5);
+          break;
+        case 2:
+          setRouletteStage(2);
+          setSpinDegree(0);
+          setWinNumber('');
+          setWinColor('');
+          setBetedColor('');
+          setBettedValue(0);
+          const updatePlayerBetObject = { ...playerBetObject, Red: 0, Black: 0, Green: 0 };
+          setPlayerBetObject(updatePlayerBetObject);
+          setPlacedBets([]);
+          setBgPos(35);
+          break;
       }
-    })
-
-
-    socket.on("prize-win", (data) =>{
-
+    }
+  
+    function handlePrizeWin(data) {
       const index = data.findIndex(item => item[0] === socket.id);
-
-      if(data[index]){
-        setBalance(balanceRef.current + data[index][1])
+      if (data[index]) {
+        setBalance(balanceRef.current + data[index][1]);
       }
+    }
+  
+    function handleReceivePlayerBet(data) {
+      console.log('xdd');
+      console.log(data);
+      handleUpdatePlacedBets(data.userID, data.bets);
+    }
+  
+    function handleReceiveChatMessage(data) {
+      console.log(data);
+      handleAddNumber(data.message, data.userID);
+    }
+  
 
-    })
+      socket.on('connect', onConnect)
+      socket.on('get_previous_bets', handlePreviousBets);
+      socket.on('bet-reveal', handleBetReveal);
+      socket.on('roulette-status', handleRouletteStatus);
+      socket.on('prize-win', handlePrizeWin);
+      socket.on('receive_player_bet', handleReceivePlayerBet);
+      socket.on('receive_chat_message', handleReceiveChatMessage);
+  
+    return () => {
+      socket.off('get_previous_bets', handlePreviousBets);
+      socket.off('bet-reveal', handleBetReveal);
+      socket.off('roulette-status', handleRouletteStatus);
+      socket.off('prize-win', handlePrizeWin);
+      socket.off('receive_player_bet', handleReceivePlayerBet);
+      socket.off('receive_chat_message', handleReceiveChatMessage);
+    };
+  }, []);
+  
 
-    socket.on("receive_chat_message", (data) =>{
-      console.log(data)
-      handleAddNumber(data.message, data.userID)
-    })
+  //   socket.on("get_previous_bets", (data) =>{
+  //     setPlacedBets(data.placedBets)
+  //     setIsBettable(data.isBettable)
+  //   })
 
-    socket.on("receive_player_bet", (data) =>{
-      console.log('xdd')
-      console.log(data)
 
-      handleUpdatePlacedBets(data.userID, data.bets)
-    })
-  });
+  //   socket.on("bet-reveal", (data)=>{
+  //     console.log(data)
+
+  //     setWinColor(data.color)
+  //     setWinNumber(data.number)
+  //   })
+
+  //   socket.on("roulette-status", (data)=>{
+  //     console.log(data)
+  //     setRouletteStage(data.stage)
+
+  //     switch(data.stage){
+  //       default:setRouletteStage(0) 
+  //               setIsBettable(true)
+  //               break
+  //       case 1: 
+  //               setRouletteStage(1)
+  //               setIsBettable(false) //false ma być
+  //               setSpinDegree(data.spin)
+  //               setBgPos((data.spin)+910*5)
+
+  //               break
+  //       case 2: 
+  //               setRouletteStage(2)
+  //               setSpinDegree(0)
+  //               setWinNumber()
+  //               setWinColor('')
+  //               setBetedColor('')
+  //               setBettedValue(0)
+  //               const updatePlayerBetObject = {...playerBetObject}
+  //               updatePlayerBetObject.Red = 0
+  //               updatePlayerBetObject.Black = 0
+  //               updatePlayerBetObject.Green = 0
+  //               setPlayerBetObject(updatePlayerBetObject)
+  //               setPlacedBets([])
+  //               setBgPos(35)
+  //               break
+  //     }
+  //   })
+
+
+  //   socket.on("prize-win", (data) =>{
+
+  //     const index = data.findIndex(item => item[0] === socket.id);
+
+  //     if(data[index]){
+  //       setBalance(balanceRef.current + data[index][1])
+  //     }
+
+  //   })
+
+  //   socket.on("receive_player_bet", (data) =>{
+  //     console.log('xdd')
+  //     console.log(data)
+
+  //     handleUpdatePlacedBets(data.userID, data.bets)
+  //   })
+  // });
+
+
+  // socket.on("receive_chat_message", (data) =>{
+  //   console.log(data)
+  //   handleAddNumber(data.message, data.userID)
+  // })
 
   
   // socket.on("disconnect", () => {
