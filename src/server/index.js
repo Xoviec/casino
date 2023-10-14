@@ -189,7 +189,7 @@ const betResetMessageObject = {
 const betReady = () =>{ //stage 0
   isBettable = true
   io.emit("roulette-status", betReadyMessageObject)
-  setTimeout(betDisable, 5000)
+  setTimeout(betDisable, 15000)
 }
 const betDisable = () =>{ //stage 1
   isBettable = false

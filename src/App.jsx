@@ -17,7 +17,7 @@ function App({client}) {
 
 
   const [numberList, setNumberList] = useState([])
-  const [userID, setUserID] = useState('xd')
+  const [userID, setUserID] = useState()
   const [isBettable, setIsBettable] = useState(true)
   const [rouletteStage, setRouletteStage] = useState(0)
   const [balance, setBalance] = useState(1000)
@@ -67,7 +67,8 @@ function App({client}) {
   useEffect(() => {
 
     function onConnect(){
-      setUserID(socket.id)
+      !userID && setUserID(socket.id)
+
     }
 
     function handlePreviousBets(data) {
@@ -144,83 +145,6 @@ function App({client}) {
     };
   }, []);
   
-
-  //   socket.on("get_previous_bets", (data) =>{
-  //     setPlacedBets(data.placedBets)
-  //     setIsBettable(data.isBettable)
-  //   })
-
-
-  //   socket.on("bet-reveal", (data)=>{
-  //     console.log(data)
-
-  //     setWinColor(data.color)
-  //     setWinNumber(data.number)
-  //   })
-
-  //   socket.on("roulette-status", (data)=>{
-  //     console.log(data)
-  //     setRouletteStage(data.stage)
-
-  //     switch(data.stage){
-  //       default:setRouletteStage(0) 
-  //               setIsBettable(true)
-  //               break
-  //       case 1: 
-  //               setRouletteStage(1)
-  //               setIsBettable(false) //false ma być
-  //               setSpinDegree(data.spin)
-  //               setBgPos((data.spin)+910*5)
-
-  //               break
-  //       case 2: 
-  //               setRouletteStage(2)
-  //               setSpinDegree(0)
-  //               setWinNumber()
-  //               setWinColor('')
-  //               setBetedColor('')
-  //               setBettedValue(0)
-  //               const updatePlayerBetObject = {...playerBetObject}
-  //               updatePlayerBetObject.Red = 0
-  //               updatePlayerBetObject.Black = 0
-  //               updatePlayerBetObject.Green = 0
-  //               setPlayerBetObject(updatePlayerBetObject)
-  //               setPlacedBets([])
-  //               setBgPos(35)
-  //               break
-  //     }
-  //   })
-
-
-  //   socket.on("prize-win", (data) =>{
-
-  //     const index = data.findIndex(item => item[0] === socket.id);
-
-  //     if(data[index]){
-  //       setBalance(balanceRef.current + data[index][1])
-  //     }
-
-  //   })
-
-  //   socket.on("receive_player_bet", (data) =>{
-  //     console.log('xdd')
-  //     console.log(data)
-
-  //     handleUpdatePlacedBets(data.userID, data.bets)
-  //   })
-  // });
-
-
-  // socket.on("receive_chat_message", (data) =>{
-  //   console.log(data)
-  //   handleAddNumber(data.message, data.userID)
-  // })
-
-  
-  // socket.on("disconnect", () => {
-  //   console.log('Disconnected from server'); 
-  // });
-
 
 
 
