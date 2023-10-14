@@ -245,15 +245,15 @@ function App({client}) {
         <div className={`betting ${isBettable ? `bettable` : "bettablent"}`}></div>
         <div className="input-box">
           <div className="coins"></div>
-          <input className='bet-input' type="number" placeholder='Enter bet ammount' onChange={getBetValue} />
+          <input className='bet-input' type="number" placeholder='Enter bet ammount' onChange={getBetValue} value={betInputValue}/>
           <div className="quick-bets">
-            <button>Clear</button>
-            <button>+1</button>
-            <button>+10</button>
-            <button>+100</button>
-            <button>1/2</button>
-            <button>x 2</button>
-            <button>Max</button>
+            <button onClick={(()=>setBetInputValue(0))}>Clear</button>
+            <button onClick={(()=>setBetInputValue((prev)=>prev+1))}>+1</button>
+            <button onClick={(()=>setBetInputValue((prev)=>prev+10))}>+10</button>
+            <button onClick={(()=>setBetInputValue((prev)=>prev+100))}>+100</button>
+            <button onClick={(()=>setBetInputValue((prev)=>(Math.ceil(prev/2))))}>1/2</button>
+            <button onClick={(()=>setBetInputValue((prev)=>prev*2))}>x 2</button>
+            <button onClick={(()=>setBetInputValue(balance))}>Max</button>
           </div>
         </div>
         <div className='placed-bets-container'>
