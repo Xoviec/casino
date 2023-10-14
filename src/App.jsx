@@ -29,6 +29,7 @@ function App({client}) {
   const [bgPos, setBgPos] = useState(35)
   const [winNumber, setWinNumber] = useState()
   const [winColor, setWinColor] = useState('')
+  const [betHistoryList, setBetHistoryList] = useState([])
 
   const [playerBetObject, setPlayerBetObject] = useState({
     Red: 0,
@@ -62,7 +63,7 @@ function App({client}) {
   //   setUserID(socket.id)
 
 
-
+console.log(betHistoryList)
 
   useEffect(() => {
 
@@ -78,6 +79,11 @@ function App({client}) {
     function handleBetReveal(data) {
       setWinColor(data.color);
       setWinNumber(data.number);
+      const latestBet = {
+        color: data.color,
+        number: data.number
+      }
+      setBetHistoryList(prevBetHistory => [...prevBetHistory, latestBet])
     }
   
     function handleRouletteStatus(data) {
@@ -240,6 +246,15 @@ function App({client}) {
               }}
               className="roulette"
             />
+        </div>
+        <div className="bet-history-container">
+          {
+            betHistoryList.slice(0, 10).map((bet)=>(
+                <div className={`bet-history ${bet.color}`}>
+                  <p>{bet.number}</p>
+                </div>
+            ))
+          }
         </div>
    
         <div className={`betting ${isBettable ? `bettable` : "bettablent"}`}></div>
