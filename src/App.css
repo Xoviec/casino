@@ -1,10 +1,22 @@
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
 .App {
   display: flex;
   text-align: center;
   font-size: medium;
   color: rgb(192 192 192);
   width: 100%;
-  background: linear-gradient(22deg, rgb(37, 39, 83) 0%, rrgb(37, 41, 71)100%);
+  background-color: #1a1c24;
   min-height: 100vh;
 }
 
@@ -367,7 +379,7 @@
   top: 0;
   width: 50px;
   height: 100%;
-  background: linear-gradient(90deg, rgba(48,48,48,1) 0%, rgba(36,37,56,0) 100%);
+  background: linear-gradient(90deg, rgba(26,28,36,255) 0%, rgba(36,37,56,0) 100%);
 }
 
 .roulette::after{
@@ -377,14 +389,14 @@
   top: 0;
   width: 50px;
   height: 100%;
-  background: linear-gradient(270deg, rgba(48,48,48,1) 0%, rgba(36,37,56,0) 100%);
+  background: linear-gradient(270deg, rgba(26,28,36,255) 0%, rgba(36,37,56,0) 100%);
 }
 
 .input-box{
   display: flex;
   background-color: rgb(20 20 25);
   border: 1px solid rgb(73, 76, 93);
-  border-radius: 5px;
+  border-radius: 0.25rem;
 }
 
 .bet-input{
@@ -398,6 +410,24 @@
   color: rgb(86, 86, 86);
 }
 
+.quick-bets{
+  display: flex;
+  gap: 0.3rem;
+  align-items: center;
+  padding: 0 0.5rem 0 0.5rem;
+  border-left: 1px solid rgb(73, 76, 93);
+}
+
+.quick-bets button{
+  background-color: rgb(51 53 65);
+  color: rgb(146 147 166);
+  border: none;
+  height: 60%;
+  min-width: 3rem;
+  border-radius: 0.125rem;
+  text-transform: uppercase;
+  font-weight: 600;
+}
 
 .coins{
   width: 40px;

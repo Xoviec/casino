@@ -68,7 +68,6 @@ function App({client}) {
 
     function onConnect(){
       !userID && setUserID(socket.id)
-
     }
 
     function handlePreviousBets(data) {
@@ -246,7 +245,16 @@ function App({client}) {
         <div className={`betting ${isBettable ? `bettable` : "bettablent"}`}></div>
         <div className="input-box">
           <div className="coins"></div>
-          <input className='bet-input' type="number" placeholder='kwota' onChange={getBetValue} />
+          <input className='bet-input' type="number" placeholder='Enter bet ammount' onChange={getBetValue} />
+          <div className="quick-bets">
+            <button>Clear</button>
+            <button>+1</button>
+            <button>+10</button>
+            <button>+100</button>
+            <button>1/2</button>
+            <button>x 2</button>
+            <button>Max</button>
+          </div>
         </div>
         <div className='placed-bets-container'>
           <Bets color='Red' placeBet={placeBet} isBettable={isBettable} winColor={winColor} placedBets={placedBets}/>
