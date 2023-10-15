@@ -10,13 +10,8 @@ export const Bets = ({color, placedBets, placeBet, isBettable, winColor}) =>{
     const totalBetColorSum = placedBets.reduce((acc, item) => acc + item.bets[color], 0);
 
 
-    // Używamy pętli forEach do wypisania wartości bets[color] dla każdego obiektu spełniającego warunek
-    // filteredData.forEach(item => {
-    //     console.log(item.bets[color]);
-    // });
-
     return(
-        <div className="bet-container">
+        <div className={`bet-container ${winColor === color && `bet-container-winning`}`}>
             <button name={color} id={color} onClick={placeBet} className={`btn-hidden bet-color-header bet-header-${color} `}>{color}</button>
             <label htmlFor={color} name={color}>
                 <div  className={`bet-btn-main bet-header-${color} ${!isBettable && 'bets-closed' } ${winColor === color && `win-effect`}`}>
@@ -34,7 +29,12 @@ export const Bets = ({color, placedBets, placeBet, isBettable, winColor}) =>{
                         {betsPerColor.length} Bets Total
                     </p>
                     <p>
-                        {totalBetColorSum}$
+                    {
+                        winColor === `Green` ? `+${totalBetColorSum * 14}$` :
+                        winColor === color ? `+${totalBetColorSum * 2}$` :
+                        (winColor ? `-${totalBetColorSum}$` :
+                        `${totalBetColorSum}$`)
+                    }
                     </p>
                 </div>
                 <div className="bet-section">
@@ -43,7 +43,14 @@ export const Bets = ({color, placedBets, placeBet, isBettable, winColor}) =>{
                             player.bets[color] > 0 &&
                             <div className="single-bet">
                                 <p>{player.userID}</p>
-                                <p>{player.bets[color]}$</p>
+                                <p>    
+                                    {
+                                        winColor === `Green` ? `+${player.bets[color] * 14}$` :
+                                        winColor === color ? `+${player.bets[color] * 2}$` :
+                                        (winColor ? `-${player.bets[color]}$` :
+                                        `${player.bets[color]}$`)
+                                    }
+                                </p>
                             </div>
                         ))
                     }
