@@ -247,9 +247,9 @@ console.log(betHistoryList)
               className="roulette"
             />
         </div>
-        <div className={` ${isBettable ? `betting-status` : "betting-betable"}`}>
-                {/* {`${isBettable ? `Bets open` : ""}`} */}
-        </div>
+        {/* <div className={` ${isBettable ? `betting-status` : "betting-betable"}`}>
+                {`${isBettable ? `Bets open` : ""}`}
+        </div> */}
         <div className="bet-history-container">
           {
             betHistoryList.slice(-10).map((bet)=>(
