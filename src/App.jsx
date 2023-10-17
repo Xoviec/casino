@@ -4,6 +4,7 @@ import { useEffect, useState, useRef, Component } from 'react';
 import React from 'react';
 import { Bets } from './components/Bets';
 import { Chatbar } from './components/Chatbar';
+import { Balance, BalanceShow } from './features/balance/balanceShow';
 const { io } = require("socket.io-client");
 const socket = io("http://localhost:8000")
 
@@ -279,6 +280,8 @@ console.log(betHistoryList)
             <button onClick={(()=>setBetInputValue(balance))}>Max</button>
           </div>
         </div>
+
+          <BalanceShow/>
         <div className='placed-bets-container'>
           <Bets color='Red' placeBet={placeBet} isBettable={isBettable} winColor={winColor} placedBets={placedBets}/>
           <Bets color='Green' placeBet={placeBet} isBettable={isBettable} winColor={winColor} placedBets={placedBets}/>

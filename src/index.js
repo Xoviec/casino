@@ -4,8 +4,9 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Navbar } from './Navbar';
+import { store } from './app/store';
+import { Provider } from 'react-redux';
 const { io } = require("socket.io-client");
-
 
 
 
@@ -14,8 +15,10 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
   <React.StrictMode>
-    <Navbar/>
-    <App />
+    <Provider store={store}>
+      <Navbar/>
+      <App />
+    </Provider>
    </React.StrictMode>
 );
 
