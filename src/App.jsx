@@ -4,7 +4,9 @@ import { useEffect, useState, useRef, Component } from 'react';
 import React from 'react';
 import { Bets } from './components/Bets';
 import { Chatbar } from './components/Chatbar';
-import { Balance, BalanceShow } from './features/balance/balanceShow';
+import { useSelector, useDispatch } from 'react-redux'
+import { incrementByAmount } from './features/balance/balanceSlice';
+import { BalanceShow } from './features/balance/balanceShow';
 const { io } = require("socket.io-client");
 const socket = io("http://localhost:8000")
 
@@ -15,6 +17,7 @@ function App({client}) {
  
 
 
+  const dispatch = useDispatch()
 
   const [numberList, setNumberList] = useState([])
   const [userID, setUserID] = useState()
@@ -121,6 +124,7 @@ console.log(betHistoryList)
       const index = data.findIndex(item => item[0] === socket.id);
       if (data[index]) {
         setBalance(balanceRef.current + data[index][1]);
+        dispatch(incrementByAmount(Number(data[index][1])))
       }
     }
   
@@ -210,7 +214,7 @@ console.log(betHistoryList)
     if(isBettable && (betInputValue <= balance) && (betInputValue > 0)){
       setBettedValue((prev)=> prev + betInputValue)
       setBalance((prev)=>prev-betInputValue)
-
+      dispatch(incrementByAmount(Number(-betInputValue)))
       setBetedColor(e.target.name)
       const color = e.target.name
       console.log(playerBetObject)
@@ -236,10 +240,10 @@ console.log(betHistoryList)
       </div>
       <div className="main-container">
         <p>{userID}</p>
-        <div className="balance-box">
+        {/* <div className="balance-box">
           <div className="coins"></div>
           <p className='balance'>{balance}</p>
-        </div>
+        </div> */}
 
         <div className={`roulette-container ${!isBettable && `roulette-active`}`}>
           <div className="controller"/>
@@ -281,7 +285,6 @@ console.log(betHistoryList)
           </div>
         </div>
 
-          <BalanceShow/>
         <div className='placed-bets-container'>
           <Bets color='Red' placeBet={placeBet} isBettable={isBettable} winColor={winColor} placedBets={placedBets}/>
           <Bets color='Green' placeBet={placeBet} isBettable={isBettable} winColor={winColor} placedBets={placedBets}/>

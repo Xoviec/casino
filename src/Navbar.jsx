@@ -1,8 +1,11 @@
+import { BalanceShow } from "./features/balance/balanceShow"
 
 export const Navbar = () =>{
 
     return(
-        <div className="navbar">
-        </div>
+        <nav>
+            <p className="nav-title">nazwa</p>
+            <BalanceShow/>
+        </nav>
     )
 }

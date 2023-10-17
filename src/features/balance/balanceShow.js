@@ -4,25 +4,11 @@ import { decrement, increment } from './balanceSlice'
 
 export function BalanceShow() {
   const count = useSelector((state) => state.balance.value)
-  const dispatch = useDispatch()
 
   return (
-    <div>
-      <div>
-        <button
-          aria-label="Increment value"
-          onClick={() => dispatch(increment())}
-        >
-          Increment
-        </button>
-        <span>{count}</span>
-        <button
-          aria-label="Decrement value"
-          onClick={() => dispatch(decrement())}
-        >
-          Decrement
-        </button>
-      </div>
+    <div className='balance-box'>
+      <div className='coins'></div>
+        <p className='balance'>{count}</p>
     </div>
   )
 }
