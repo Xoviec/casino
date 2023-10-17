@@ -42,12 +42,16 @@ function App({client}) {
   const handleShareNumber = (event) =>{
 
 
-    const message = event.target.number.value
+    const message = event.target.number.value.trim();
 
-    socket.emit("send_message", {
-      message: message,
-      userID: userID
-    })
+    if (message.length > 0) {
+      socket.emit("send_message", {
+        message: message,
+        userID: userID
+      });
+    }
+
+
 
     event.preventDefault()
     event.target.number.value = ''
