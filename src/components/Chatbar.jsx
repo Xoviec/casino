@@ -1,12 +1,19 @@
-export const Chatbar = ({numberList, userID, ref, handleShareNumber}) =>{
+import {useRef, useEffect} from 'react';
 
 
+export const Chatbar = ({numberList, userID, handleShareNumber}) =>{
 
+    const ref = useRef()
+
+    useEffect(() => {
+        ref.current.scrollTop = ref.current.scrollHeight;
+      }, [numberList]);
+    
     return(
         <div className="chat-window">
-            <div className='chat-messages'>
+            <div ref={ref} className='chat-messages'>
                 {numberList.map((number) => (
-                <div ref={ref} key={number} className={`${number.userID===userID ? 'user' : 'stranger'} single-message`}>
+                <div  key={number} className={`${number.userID===userID ? 'user' : 'stranger'} single-message`}>
                     <p className='message-user-id'>{number.userID}</p>
                     <p className='message-content'>{number.number}</p>
                 </div>

@@ -13,7 +13,6 @@ function App({client}) {
 
  
 
-  const ref = useRef()
 
 
   const [numberList, setNumberList] = useState([])
@@ -228,7 +227,7 @@ console.log(betHistoryList)
   return (
     <div className="App">
       <div className='chat'>
-        <Chatbar numberList={numberList} userID={userID} ref={ref} handleShareNumber={handleShareNumber}/>
+        <Chatbar numberList={numberList} userID={userID} handleShareNumber={handleShareNumber}/>
       </div>
       <div className="main-container">
         <p>{userID}</p>
