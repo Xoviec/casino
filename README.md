@@ -7,7 +7,7 @@ React Casino app
 
 - Live chat
 - Live bets
- ...more in development
+  
 ## Running the Project
 
 To start the project, run the following commands in your terminal:
