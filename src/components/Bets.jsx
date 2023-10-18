@@ -42,7 +42,7 @@ export const Bets = ({color, placedBets, placeBet, isBettable, winColor}) =>{
                         placedBets?.map((player)=>(
                             player.bets[color] > 0 &&
                             <div className="single-bet">
-                                <p>{player.userID}</p>
+                                <p>{player.nickName}</p>
                                 <p>    
                                     {
                                         winColor === `Green` ? `+${player.bets[color] * 14}$` :

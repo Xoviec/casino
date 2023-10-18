@@ -131,7 +131,7 @@ console.log(betHistoryList)
     function handleReceivePlayerBet(data) {
       console.log('xdd');
       console.log(data);
-      handleUpdatePlacedBets(data.userID, data.bets);
+      handleUpdatePlacedBets(data.userID, data.bets, data.nickName);
     }
   
     function handleReceiveChatMessage(data) {
@@ -167,10 +167,11 @@ console.log(betHistoryList)
 
 
 
-  const handleUpdatePlacedBets = (userID, bets) => {
+  const handleUpdatePlacedBets = (userID, bets, nick) => {
     const betObj = {
       userID: userID,
-      bets: bets
+      bets: bets,
+      nickName: nick
     };
   
     setPlacedBets((prevPlacedBets) => {
