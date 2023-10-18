@@ -27,7 +27,7 @@ function App({client}) {
   const [userID, setUserID] = useState()
   const [isBettable, setIsBettable] = useState(true)
   const [rouletteStage, setRouletteStage] = useState(0)
-  const [balance, setBalance] = useState(1000)
+  const [balance, setBalance] = useState()
   const balanceRef = useRef(balance)
   const [betInputValue, setBetInputValue] = useState(0)
   const [bettedValue, setBettedValue] = useState(0)
@@ -37,15 +37,9 @@ function App({client}) {
   const [winNumber, setWinNumber] = useState()
   const [winColor, setWinColor] = useState('')
   const [betHistoryList, setBetHistoryList] = useState([])
-  const [isLogged, setIsLogged] = useState(false)
+  const [isLogged, setIsLogged] = useState(true)
   const [localStorageInfo, setLocalStorageInfo] = useState({})
   const nick = useSelector((state) => state.nickname.value)
-
-
-
-  // setter
-
-  // getter
 
 
 
@@ -178,10 +172,9 @@ console.log(betHistoryList)
       // console.log(JSON.parse(localStorageInfo).nickName)
       dispatch(setNickname(JSON.parse(localStorageInfo).nickName))
       dispatch(setAmmount(((JSON.parse(localStorageInfo).balance))))
-
-
-
-
+    }
+    else{
+      setIsLogged(false)
     }
   }, [])
   
@@ -278,6 +271,8 @@ console.log(betHistoryList)
       nickName: e.target[0].value,
       balance: 1000
     };
+
+    setBalance(1000)
     
     localStorage.setItem('roulette-user-info', JSON.stringify(localStorageInfo));
     
