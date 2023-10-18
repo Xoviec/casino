@@ -164,6 +164,7 @@ input[type=number] {
   font-size: xx-small;
   margin: 0;
   color: #868686;
+  margin: 0 5px 0 5px;
 }
 
 .message-content{
@@ -171,7 +172,7 @@ input[type=number] {
   flex-direction: column;
   flex-wrap: wrap;
   margin: 0;
-  border-radius: 18px;
+  border-radius: 12px;
   padding: 0.8rem;
   max-width: 75%;
   text-align: left;
@@ -181,7 +182,7 @@ input[type=number] {
 }
 
 .user .message-content{
-  background-color: rgb(0, 132, 255);
+  background-color:rgb(51 53 65);
   color: #FFFFFF;
 }
 

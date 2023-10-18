@@ -250,7 +250,6 @@ console.log(betHistoryList)
         <Chatbar numberList={numberList} userID={userID} handleShareNumber={handleShareNumber}/>
       </div>
       <div className="main-container">
-        <p>{userID}</p>
         <div className={`roulette-container ${!isBettable && `roulette-active`}`}>
           <div className="controller"/>
           <div
