@@ -17,10 +17,6 @@ const socket = io("http://localhost:8000")
 
 function App({client}) {
 
-
- 
-
-
   const dispatch = useDispatch()
 
   const [numberList, setNumberList] = useState([])
@@ -77,7 +73,7 @@ console.log(betHistoryList)
   useEffect(() => {
 
     function onConnect(){
-      !userID && setUserID(socket.id)
+      (!userID || isLogged) && setUserID(socket.id)
     }
 
     function handlePreviousBets(data) {
@@ -123,7 +119,14 @@ console.log(betHistoryList)
     }
   
     function handlePrizeWin(data) {
+
+
+      console.log(data)
+
       const index = data.findIndex(item => item[0] === socket.id);
+
+      console.log(index)
+
       if (data[index]) {
         setBalance(balanceRef.current + data[index][1])
         const storedUserInfo = JSON.parse(localStorage.getItem('roulette-user-info')) || {};
@@ -169,9 +172,12 @@ console.log(betHistoryList)
 
     if(localStorageInfo){
       setIsLogged(true)
-      // console.log(JSON.parse(localStorageInfo).nickName)
+      setUserID(JSON.parse(localStorageInfo).userID)
       dispatch(setNickname(JSON.parse(localStorageInfo).nickName))
       dispatch(setAmmount(((JSON.parse(localStorageInfo).balance))))
+      
+
+      setBalance(JSON.parse(localStorageInfo).balance)
     }
     else{
       setIsLogged(false)
@@ -247,6 +253,9 @@ console.log(betHistoryList)
       const updatePlayerBetObject = {...playerBetObject}
       updatePlayerBetObject[color] = updatePlayerBetObject[color] + betInputValue ;
   
+
+      console.log('userid', userID)
+
       socket.emit('send_player_bet', {
         userID: userID,
         nickName: nick,
@@ -269,13 +278,14 @@ console.log(betHistoryList)
 
     const localStorageInfo = {
       nickName: e.target[0].value,
-      balance: 1000
+      balance: 1000,
+      userID: userID
     };
 
     setBalance(1000)
     
     localStorage.setItem('roulette-user-info', JSON.stringify(localStorageInfo));
-    
+
 
     setIsLogged(true)
 
@@ -309,7 +319,7 @@ console.log(betHistoryList)
           }
           <p className='prev-rolls'>PREVIOUS ROLLS</p>
         </div>
-   
+
         {/* <div className={`betting ${isBettable ? `bettable` : "bettablent"}`}></div> */}
         {/* <div className={`betting-status ${isBettable ? `Green` : "Red"}`}>{`${isBettable ? `Bets open` : "Bets closed"}`}</div> */}
         <div className="input-box">

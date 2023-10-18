@@ -122,6 +122,8 @@ let placedBets = []
 
 
 function updatePlacedBets(betObj) {
+
+  console.log('tiufsa', betObj)
   const existingBetIndex = placedBets.findIndex(betDetails => betDetails.userID === betObj.userID);
 
   if (existingBetIndex !== -1) {
@@ -162,7 +164,6 @@ io.on("connection", (socket) => {
 
   socket.on("send_player_bet", (data)=>{
 
-    console.log(data)
     updatePlacedBets(data)
     io.emit("receive_player_bet", data) //wysyła do każdego
   })
@@ -230,6 +231,8 @@ const getWinner = (color) =>{
     let multiplier = color === 'Green' ? 14 : 2;
     return [user.userID, user.bets[color] * multiplier];
   });
+
+  console.log('winners-id', winnersID)
 
 
   io.emit("prize-win", winnersID)

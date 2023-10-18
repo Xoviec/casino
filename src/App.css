@@ -24,7 +24,6 @@ input[type=number] {
   color: rgb(192 192 192);
   width: 100%;
   background-color: #1a1c24;
-  min-height: 100vh;
 }
 
 
@@ -195,7 +194,7 @@ input[type=number] {
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100vh;
+  height: calc(100vh - 5rem);
   width: 100%;
 }
 
