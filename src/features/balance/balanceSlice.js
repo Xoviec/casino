@@ -15,8 +15,8 @@ export const balanceSlice = createSlice({
       // immutable state based off those changes
       state.value += 1
     },
-    decrement: (state) => {
-      state.value -= 1
+    setAmmount: (state, action) => {
+      state.value = action.payload
     },
     incrementByAmount: (state, action) => {
       state.value += action.payload
@@ -25,6 +25,6 @@ export const balanceSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { increment, decrement, incrementByAmount } = balanceSlice.actions
+export const { increment, setAmmount, incrementByAmount } = balanceSlice.actions
 
 export default balanceSlice.reducer

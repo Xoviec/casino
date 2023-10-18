@@ -6,7 +6,7 @@ import { Bets } from './components/Bets';
 import { Chatbar } from './components/Chatbar';
 import { Login } from './components/Login';
 import { useSelector, useDispatch } from 'react-redux'
-import { incrementByAmount } from './features/balance/balanceSlice';
+import { incrementByAmount, setAmmount } from './features/balance/balanceSlice';
 import { setNickname } from './features/nickname/nicknameSlice';
 
 import { Nickname } from './features/nickname/nickname';
@@ -38,7 +38,15 @@ function App({client}) {
   const [winColor, setWinColor] = useState('')
   const [betHistoryList, setBetHistoryList] = useState([])
   const [isLogged, setIsLogged] = useState(false)
+  const [localStorageInfo, setLocalStorageInfo] = useState({})
   const nick = useSelector((state) => state.nickname.value)
+
+
+
+  // setter
+
+  // getter
+
 
 
   const [playerBetObject, setPlayerBetObject] = useState({
@@ -123,7 +131,11 @@ console.log(betHistoryList)
     function handlePrizeWin(data) {
       const index = data.findIndex(item => item[0] === socket.id);
       if (data[index]) {
-        setBalance(balanceRef.current + data[index][1]);
+        setBalance(balanceRef.current + data[index][1])
+        const storedUserInfo = JSON.parse(localStorage.getItem('roulette-user-info')) || {};
+        storedUserInfo.balance = (balanceRef.current + data[index][1]); // Ustaw wartość początkową dla pola balance
+        localStorage.setItem('roulette-user-info', JSON.stringify(storedUserInfo));
+
         dispatch(incrementByAmount(Number(data[index][1])))
       }
     }
@@ -157,6 +169,21 @@ console.log(betHistoryList)
       socket.off('receive_chat_message', handleReceiveChatMessage);
     };
   }, []);
+
+  useEffect(()=>{
+    const localStorageInfo = localStorage.getItem('roulette-user-info');
+
+    if(localStorageInfo){
+      setIsLogged(true)
+      // console.log(JSON.parse(localStorageInfo).nickName)
+      dispatch(setNickname(JSON.parse(localStorageInfo).nickName))
+      dispatch(setAmmount(((JSON.parse(localStorageInfo).balance))))
+
+
+
+
+    }
+  }, [])
   
 
 
@@ -213,6 +240,13 @@ console.log(betHistoryList)
     if(isBettable && (betInputValue <= balance) && (betInputValue > 0)){
       setBettedValue((prev)=> prev + betInputValue)
       setBalance((prev)=>prev-betInputValue)
+
+      const storedUserInfo = JSON.parse(localStorage.getItem('roulette-user-info')) || {};
+      storedUserInfo.balance = balance-betInputValue; 
+      localStorage.setItem('roulette-user-info', JSON.stringify(storedUserInfo));
+
+
+      
       dispatch(incrementByAmount(Number(-betInputValue)))
       setBetedColor(e.target.name)
       const color = e.target.name
@@ -232,12 +266,21 @@ console.log(betHistoryList)
   }
 
 
-  const handleSetNickname = (e) =>{
+  const handleStartGame = (e) =>{
     console.log(e.target[0].value)
 
     e.preventDefault()
 
     dispatch(setNickname(e.target[0].value))
+
+
+    const localStorageInfo = {
+      nickName: e.target[0].value,
+      balance: 1000
+    };
+    
+    localStorage.setItem('roulette-user-info', JSON.stringify(localStorageInfo));
+    
 
     setIsLogged(true)
 
@@ -245,7 +288,7 @@ console.log(betHistoryList)
 
   return (
     <div className="App">
-      {!isLogged && <Login handleSetNickname={handleSetNickname}/>}
+      {!isLogged && <Login handleStartGame={handleStartGame}/>}
       <div className='chat'>
         <Chatbar numberList={numberList} userID={userID} handleShareNumber={handleShareNumber}/>
       </div>
