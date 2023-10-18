@@ -8,6 +8,7 @@ import { Login } from './components/Login';
 import { useSelector, useDispatch } from 'react-redux'
 import { incrementByAmount } from './features/balance/balanceSlice';
 import { setNickname } from './features/nickname/nicknameSlice';
+
 import { Nickname } from './features/nickname/nickname';
 import { BalanceShow } from './features/balance/balanceShow';
 const { io } = require("socket.io-client");
@@ -37,6 +38,8 @@ function App({client}) {
   const [winColor, setWinColor] = useState('')
   const [betHistoryList, setBetHistoryList] = useState([])
   const [isLogged, setIsLogged] = useState(false)
+  const nick = useSelector((state) => state.nickname.value)
+
 
   const [playerBetObject, setPlayerBetObject] = useState({
     Red: 0,
@@ -54,8 +57,10 @@ function App({client}) {
 
     if (message.length > 0) {
       socket.emit("send_message", {
+
         message: message,
-        userID: userID
+        userID: userID,
+        nickName: nick,
       });
     }
 
@@ -64,15 +69,6 @@ function App({client}) {
     event.preventDefault()
     event.target.number.value = ''
   }
-
-
-//odbieranie 
-
-    
-  // socket.on("connect", () => {
-
-  //   setUserID(socket.id)
-
 
 console.log(betHistoryList)
 
@@ -140,7 +136,7 @@ console.log(betHistoryList)
   
     function handleReceiveChatMessage(data) {
       console.log(data);
-      handleAddNumber(data.message, data.userID);
+      handleAddNumber(data.message, data.userID, data.nickName);
     }
   
 
@@ -178,26 +174,24 @@ console.log(betHistoryList)
     };
   
     setPlacedBets((prevPlacedBets) => {
-      // Sprawdzenie czy użytkownik dał już jakieś bety
       const existingBetIndex = prevPlacedBets.findIndex(betDetails => betDetails.userID === userID);
   
       if (existingBetIndex !== -1) {
-        // Jeśli użytkownik istnieje w placedBets, zaktualizuj jego bets za pomocą Object.assign()
         const updatedBet = Object.assign({}, prevPlacedBets[existingBetIndex], betObj);
         const updatedPlacedBets = [...prevPlacedBets];
         updatedPlacedBets[existingBetIndex] = updatedBet;
         return updatedPlacedBets;
       } else {
-        // Jeśli użytkownik nie istnieje w placedBets, dodaj nowy obiekt
         return [...prevPlacedBets, betObj];
       }
     });
   };
 
-  const handleAddNumber = (msg, id) => {
+  const handleAddNumber = (msg, id, nick) => {
     const newUserNumber = {
       number: msg,
       userID: id,
+      nickName: nick
     };
   
     setNumberList((prevNumberList) => {
@@ -227,6 +221,7 @@ console.log(betHistoryList)
   
       socket.emit('send_player_bet', {
         userID: userID,
+        nickName: nick,
         bets:{
           ...updatePlayerBetObject
         }
@@ -255,11 +250,6 @@ console.log(betHistoryList)
       </div>
       <div className="main-container">
         <p>{userID}</p>
-        {/* <div className="balance-box">
-          <div className="coins"></div>
-          <p className='balance'>{balance}</p>
-        </div> */}
-
         <div className={`roulette-container ${!isBettable && `roulette-active`}`}>
           <div className="controller"/>
           <div
@@ -270,9 +260,7 @@ console.log(betHistoryList)
               className="roulette"
             />
         </div>
-        {/* <div className={` ${isBettable ? `betting-status` : "betting-betable"}`}>
-                {`${isBettable ? `Bets open` : ""}`}
-        </div> */}
+
         <div className="bet-history-container">
           {
             betHistoryList.slice(-10).map((bet)=>(

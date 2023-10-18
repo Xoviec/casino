@@ -13,8 +13,8 @@ export const Chatbar = ({numberList, userID, handleShareNumber}) =>{
         <div className="chat-window">
             <div ref={ref} className='chat-messages'>
                 {numberList.map((number) => (
-                <div  key={number} className={`${number.userID===userID ? 'user' : 'stranger'} single-message`}>
-                    <p className='message-user-id'>{number.userID}</p>
+                <div  key={number.userID} className={`${number.userID===userID ? 'user' : 'stranger'} single-message`}>
+                    <p className='message-user-id'>{number.nickName}</p>
                     <p className='message-content'>{number.number}</p>
                 </div>
                 ))}

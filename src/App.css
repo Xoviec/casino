@@ -562,7 +562,7 @@ nav{
 
 .user-dock{
   display: flex;
-  gap: 0.4rem;
+  gap: 16px;
 }
 
 .login-dialog{
