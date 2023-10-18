@@ -553,12 +553,68 @@ nav{
   justify-content: space-between;
   align-items: center;
   padding: 0 5rem 0 5rem;
-
   box-sizing: border-box;
-
-  
 }
 
 .nav-title{
   font-size: 40px;
 }
+
+.login-dialog{
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  /* align-items: center; */
+  width: 100vw;
+  height: calc(100vh - 5rem);
+  background-color: #1d1d1dc0;
+  z-index: 10;
+}
+
+.login-dialog container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 5rem;
+  width: 32rem;
+  height: 24rem;
+  background-color: #252525;
+  padding: 5rem;
+}
+
+.login-title{
+  font-weight: 700;
+}
+
+.login-form{
+  margin-top: 5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.login-form input{
+  background-color: transparent;
+  outline: none;
+  border: none;
+  background-color: rgb(20 20 25);
+  border: 1px solid rgb(73, 76, 93);
+  border-radius: 0.25rem;
+  color: white;
+  height: 1.7rem;
+  width: 15rem;
+  padding: 0.3rem;
+}
+
+.login-form button{
+  height: 2.3rem;
+  padding: 0.3rem;
+  background-color: rgb(20 20 25);
+  border: 1px solid rgb(73, 76, 93);
+  border-radius: 0.25rem;
+  color: white;
+  cursor: pointer;
+}
+/* .login-form input::placeholder{
+  col
+} */

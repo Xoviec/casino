@@ -4,8 +4,11 @@ import { useEffect, useState, useRef, Component } from 'react';
 import React from 'react';
 import { Bets } from './components/Bets';
 import { Chatbar } from './components/Chatbar';
+import { Login } from './components/Login';
 import { useSelector, useDispatch } from 'react-redux'
 import { incrementByAmount } from './features/balance/balanceSlice';
+import { setNickname } from './features/nickname/nicknameSlice';
+import { Nickname } from './features/nickname/nickname';
 import { BalanceShow } from './features/balance/balanceShow';
 const { io } = require("socket.io-client");
 const socket = io("http://localhost:8000")
@@ -33,6 +36,7 @@ function App({client}) {
   const [winNumber, setWinNumber] = useState()
   const [winColor, setWinColor] = useState('')
   const [betHistoryList, setBetHistoryList] = useState([])
+  const [isLogged, setIsLogged] = useState(false)
 
   const [playerBetObject, setPlayerBetObject] = useState({
     Red: 0,
@@ -227,14 +231,25 @@ console.log(betHistoryList)
           ...updatePlayerBetObject
         }
       })
-  
-  
       setPlayerBetObject(updatePlayerBetObject)
     }
   }
 
+
+  const handleSetNickname = (e) =>{
+    console.log(e.target[0].value)
+
+    e.preventDefault()
+
+    dispatch(setNickname(e.target[0].value))
+
+    setIsLogged(true)
+
+  }
+
   return (
     <div className="App">
+      {!isLogged && <Login handleSetNickname={handleSetNickname}/>}
       <div className='chat'>
         <Chatbar numberList={numberList} userID={userID} handleShareNumber={handleShareNumber}/>
       </div>
