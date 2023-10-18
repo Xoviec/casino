@@ -548,7 +548,7 @@ nav{
   display: flex;
   width: 100%;
   height: 5rem;
-  background-color: #1d1d1d;
+  background-color: rgb(36 37 47 );
   color: white;
   justify-content: space-between;
   align-items: center;
@@ -558,6 +558,11 @@ nav{
 
 .nav-title{
   font-size: 40px;
+}
+
+.user-dock{
+  display: flex;
+  gap: 0.4rem;
 }
 
 .login-dialog{
@@ -615,6 +620,14 @@ nav{
   color: white;
   cursor: pointer;
 }
-/* .login-form input::placeholder{
-  col
-} */
+
+.nick-box{
+  color: rgb(220 220 220);
+  background-color: rgb(51 53 65);
+  box-shadow: inset 0 -3px #1a1c24;
+  padding: 0 1.25rem 3px 1.25rem;
+  font-weight: 700;
+  border-radius: 5px;
+  height: 2rem;
+  line-height: 0;
+}

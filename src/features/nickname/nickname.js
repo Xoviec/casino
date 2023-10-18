@@ -6,7 +6,7 @@ export function Nickname() {
   const nick = useSelector((state) => state.nickname.value)
 
   return (
-    <div className='balance-box'>
+    <div className='nick-box'>
       <p>{nick}</p>
     </div>
   )

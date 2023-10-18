@@ -6,8 +6,11 @@ export const Navbar = () =>{
     return(
         <nav>
             <p className="nav-title">nazwa</p>
-            <BalanceShow/>
-            <Nickname/>
+            <div className="user-dock">
+                <BalanceShow/>
+                <Nickname/>
+            </div>
+            
         </nav>
     )
 }
