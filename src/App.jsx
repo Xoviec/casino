@@ -35,6 +35,7 @@ function App({client}) {
   const [betHistoryList, setBetHistoryList] = useState([])
   const [isLogged, setIsLogged] = useState(true)
   const [localStorageInfo, setLocalStorageInfo] = useState({})
+  const [timer, setTimer] = useState()
   const nick = useSelector((state) => state.nickname.value)
 
 
@@ -46,6 +47,12 @@ function App({client}) {
   })
 
   const [placedBets, setPlacedBets] = useState([])
+
+  const betTimer = () =>{
+    while(timer>0){
+      setTimer((prev)=>prev-1)
+    }
+  }
 
 
   const handleShareNumber = (event) =>{
@@ -147,8 +154,42 @@ console.log(betHistoryList)
       console.log(data);
       handleAddNumber(data.message, data.userID, data.nickName);
     }
-  
 
+    function handleGetRouletteStartingTime(data){
+      console.log("data teraz:", Date.now())
+      console.log("bet o:", data)
+      const actualTimeStr = Date.now().toString()
+      const actualTime = Number(actualTimeStr.slice(0, -3));
+      let nextBetSecondsStr = data.toString()
+      let nextBetSeconds = Number(nextBetSecondsStr.slice(0,-3))
+
+      console.log(nextBetSeconds-actualTime)
+
+
+
+      let remainingBetTime = (nextBetSeconds-actualTime)
+
+      if(remainingBetTime>0){
+        setTimer(remainingBetTime)
+        const timeouter = setInterval((()=>{
+          remainingBetTime--
+          setTimer(remainingBetTime)
+          if(remainingBetTime<=0){
+            clearInterval(timeouter)
+          }
+          console.log(remainingBetTime)
+        }), 1000)
+        // betTimer
+  
+        
+      }
+
+      
+
+
+    }
+  
+      socket.on("roulette-starting-time", handleGetRouletteStartingTime)
       socket.on('connect', onConnect)
       socket.on('get_previous_bets', handlePreviousBets);
       socket.on('bet-reveal', handleBetReveal);
@@ -158,6 +199,7 @@ console.log(betHistoryList)
       socket.on('receive_chat_message', handleReceiveChatMessage);
   
     return () => {
+      socket.off("roulette-starting-time", handleGetRouletteStartingTime)
       socket.off('get_previous_bets', handlePreviousBets);
       socket.off('bet-reveal', handleBetReveal);
       socket.off('roulette-status', handleRouletteStatus);
@@ -309,6 +351,7 @@ console.log(betHistoryList)
             />
         </div>
 
+              <p>{timer}</p>
         <div className="bet-history-container">
           {
             betHistoryList.slice(-10).map((bet)=>(

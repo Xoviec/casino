@@ -18,7 +18,7 @@ const io = new Server(server, {
 })
 
 let isBettable = true
-
+let nextRouletteSpin 
 let usersList = []
 
 const bets=[
@@ -144,6 +144,9 @@ io.on("connection", (socket) => {
 
   console.log(usersList)
 
+  io.emit("roulette-starting-time", nextRouletteSpin)
+
+
   io.emit("get_previous_bets", { placedBets, isBettable }); // do każdego idzie
 
 
@@ -190,13 +193,18 @@ const betResetMessageObject = {
 
 const betReady = () =>{ //stage 0
   isBettable = true
+  const time = Date.now()
+  const betStartTime = time+15*1000
+  nextRouletteSpin = betStartTime
+  console.log('ten', time, 'za 15 sekund', betStartTime)
+  io.emit("roulette-starting-time", betStartTime)
   io.emit("roulette-status", betReadyMessageObject)
   setTimeout(betDisable, 15000)
 }
 const betDisable = () =>{ //stage 1
   isBettable = false
   const betVal = getRandomSpin()
-
+  nextRouletteSpin = 0
   const spinColor = betVal[0].color
   const spinNumber = betVal[0].number
   const spinVal = betVal[1]
