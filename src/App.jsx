@@ -342,6 +342,8 @@ console.log(betHistoryList)
       <div className="main-container">
         <div className={`roulette-container ${!isBettable && `roulette-active`}`}>
           <div className="controller"/>
+          <p className='timer'>{timer}</p>
+
           <div
               style={{
                 backgroundPosition: '-' + bgPos + 'px',
@@ -351,7 +353,6 @@ console.log(betHistoryList)
             />
         </div>
 
-              <p>{timer}</p>
         <div className="bet-history-container">
           {
             betHistoryList.slice(-10).map((bet)=>(

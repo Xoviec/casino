@@ -380,6 +380,18 @@ input[type=number] {
   z-index: 2;
 }
 
+.timer{
+  position: absolute;
+  left: 50%;
+  top: 10px;
+  width: 2rem;
+  margin-left: -1rem;
+  background-color: white;
+  z-index: 2;
+  background-color: cadetblue;
+}
+
+
 .roulette{
   position: absolute;
   left: 0;
