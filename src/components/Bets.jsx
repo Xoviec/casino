@@ -9,6 +9,7 @@ export const Bets = ({color, placedBets, placeBet, isBettable, winColor}) =>{
 
     const totalBetColorSum = placedBets.reduce((acc, item) => acc + item.bets[color], 0);
 
+    const multiplier = (color===`Green` ? 14 : 2)
 
     return(
         <div className={`bet-container ${winColor === color && `bet-container-winning`}`}>
@@ -30,8 +31,7 @@ export const Bets = ({color, placedBets, placeBet, isBettable, winColor}) =>{
                     </p>
                     <p>
                     {
-                        winColor === `Green` ? `+${totalBetColorSum * 14}$` :
-                        winColor === color ? `+${totalBetColorSum * 2}$` :
+                        winColor === color ? `+${totalBetColorSum * multiplier}$` :
                         (winColor ? `-${totalBetColorSum}$` :
                         `${totalBetColorSum}$`)
                     }
@@ -45,8 +45,7 @@ export const Bets = ({color, placedBets, placeBet, isBettable, winColor}) =>{
                                 <p>{player.nickName}</p>
                                 <p>    
                                     {
-                                        winColor === `Green` ? `+${player.bets[color] * 14}$` :
-                                        winColor === color ? `+${player.bets[color] * 2}$` :
+                                        winColor === color ? `+${player.bets[color] * multiplier}$` :
                                         (winColor ? `-${player.bets[color]}$` :
                                         `${player.bets[color]}$`)
                                     }

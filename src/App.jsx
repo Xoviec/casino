@@ -340,16 +340,19 @@ console.log(betHistoryList)
         <Chatbar numberList={numberList} userID={userID} handleShareNumber={handleShareNumber}/>
       </div>
       <div className="main-container">
-        <div className={`roulette-container ${!isBettable && `roulette-active`}`}>
-          <div className="controller"/>
-          <p className='timer'>{timer}</p>
+        <div className={`roulette-container `}>
+          <div className={`controller ${isBettable && `hidden`}`}/>
+          <div className={`timer ${!isBettable && `hidden`}`}>
+            <p>Rolling</p>
+            <span>{timer}</span>
+          </div>
 
           <div
               style={{
                 backgroundPosition: '-' + bgPos + 'px',
                 transition: rouletteStage === 1 ? '5s' : '0.4s', // Używamy operatora trójargumentowego
               }}
-              className="roulette"
+              className={`roulette ${!isBettable && `roulette-active`}`}
             />
         </div>
 
@@ -368,7 +371,7 @@ console.log(betHistoryList)
         {/* <div className={`betting-status ${isBettable ? `Green` : "Red"}`}>{`${isBettable ? `Bets open` : "Bets closed"}`}</div> */}
         <div className="input-box">
           <div className="coins"></div>
-          <input className='bet-input' type="number" placeholder='Enter bet ammount' onChange={getBetValue} value={betInputValue} min='1'/>
+          <input className='bet-input' type="number" placeholder='Enter bet ammount' onChange={getBetValue} value={betInputValue} min='0'/>
           <div className="quick-bets">
             <button onClick={(()=>setBetInputValue(0))}>Clear</button>
             <button onClick={(()=>setBetInputValue((prev)=>prev+1))}>+1</button>

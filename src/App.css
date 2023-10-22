@@ -355,19 +355,19 @@ input[type=number] {
 
 .roulette-container{
   position: relative;
-  background-color: rebeccapurple;
   width: 560px;
   height: 70px;
   transition: 0.3s;
-  opacity: 0.3;
   margin-bottom: 1rem;
 
 }
 
 .roulette-active{
-  /* filter: grayscale(50%); */
   opacity: 1;
+}
 
+.hidden{
+  visibility: hidden;
 }
 
 .controller{
@@ -381,15 +381,27 @@ input[type=number] {
 }
 
 .timer{
+  display: flex;
+  flex-direction: column;
   position: absolute;
   left: 50%;
-  top: 10px;
-  width: 2rem;
-  margin-left: -1rem;
-  background-color: white;
+  top: 50%;
+  width: 75px;
+  height: 75px;
+  margin-left: -37.5px;
+  margin-top: -21px;
   z-index: 2;
-  background-color: cadetblue;
+  font-size: 25px;
+  font-weight: 700;
+  
 }
+.timer p{
+  padding: 0;
+  margin: 0;
+  font-size: 15px;
+}
+
+
 
 
 .roulette{
@@ -402,6 +414,7 @@ input[type=number] {
   background: url('./images/ruletka.png') 0 0 repeat;
   background-position: 35px;
   transition: 5s;
+  opacity: 0.3;
 
   /* transition-timing-function: cubic-bezier(.44,.93,.18,.86); */
   transition-timing-function: cubic-bezier(0.12, 1.02, 1, 0.99);
