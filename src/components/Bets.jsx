@@ -12,16 +12,18 @@ export const Bets = ({color, placedBets, placeBet, isBettable, winColor}) =>{
     const multiplier = (color===`Green` ? 14 : 2)
 
     return(
-        <div className={`bet-container ${winColor === color && `bet-container-winning`}`}>
+        <div className={`bet-container ${winColor === color && `bet-container-winning`} ${!isBettable && 'bets-closed' }`}>
             <button name={color} id={color} onClick={placeBet} className={`btn-hidden bet-color-header bet-header-${color} `}>{color}</button>
             <label htmlFor={color} name={color}>
-                <div className={`bet-btn-main bet-header-${color} ${!isBettable && 'bets-closed' } ${winColor === color && `win-effect`}`}>
-                    <p className="bet-place">
-                        Place Bet
-                    </p>
-                    <p className="bet-multiplier">
-                        {`${color === 'Green' ? '14x' : '2x'}`}
-                    </p>
+                <div className={`bet-btn-main bet-header-${color}/  ${winColor === color && `win-effect`}`}>
+                    <div className={`color-circle bet-header-${color} `}/>
+                    <div className="bet-place-text">
+                        <p className="bet-place">{isBettable ? 'Place bet' : 'Bets closed'}</p> 
+                        <p className="bet-multiplier">
+                            Win {`${color === 'Green' ? '14x' : '2x'}`}
+                        </p>
+                    </div>
+    
                 </div>
             </label>
             <div className="bet-bottom-border">

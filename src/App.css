@@ -258,16 +258,34 @@ input[type=number] {
 .bet-btn-main{
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 0.5rem;
   cursor: pointer;
   /* border-radius: 0.3rem 0.3rem 0 0; */
   transition: 0.2s;
+  background-color: rgb(51 53 65);
+}
+
+.bet-place-text{
+  display: flex;
+  flex-grow: 1;
+  justify-content: space-between;
+  margin: 0 1rem 0 1rem;
+}
+
+.color-circle{
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  
 }
 
 .bet-place{
   font-weight: 700;
   color: rgb(224, 218, 218);
 }
+
+
 
 .bet-multiplier{
   font-weight: 700;
@@ -277,23 +295,24 @@ input[type=number] {
 
 
 
+
 .bet-header-Red{
   /* background: linear-gradient(22deg, rgba(154,19,19,1) 0%, rgba(83,12,12,1) 100%); */
-  /* background-color: #FF3131; */
-  background: linear-gradient(90deg, rgba(102,19,19,1) 0%, rgba(255,49,49,1) 100%);
+  background-color: #FF3131;
+  /* background: linear-gradient(90deg, rgba(102,19,19,1) 0%, rgba(255,49,49,1) 100%); */
 
 }
 .bet-header-Green{
   /* background: linear-gradient(22deg, rgba(137,222,105,1) 0%, rgba(81,115,71,1) 100%); */
-  /* background-color: #3D892A; */
+  background-color: #3D892A;
   /* background: linear-gradient(90deg, rgba(48,48,48,1) 25%, rgba(61,137,42,1) 100%); */
-  background: linear-gradient(90deg, rgba(22,51,14,1) 0%, rgba(61,137,42,1) 100%);
+  /* background: linear-gradient(90deg, rgba(22,51,14,1) 0%, rgba(61,137,42,1) 100%); */
 
 }
 .bet-header-Black{
   /* background: linear-gradient(22deg, rgba(36,37,56,1) 0%, rgba(18,20,34,1) 100%); */
-  /* background-color: #545454; */
-  background: linear-gradient(90deg, rgba(48,48,48,1) 25%, rgba(84,84,84,1) 100%);
+  background-color: #545454;
+  /* background: linear-gradient(90deg, rgba(48,48,48,1) 25%, rgba(84,84,84,1) 100%); */
 }
 
 /* .win-effect{
@@ -301,13 +320,14 @@ input[type=number] {
 } */
 
 .bets-closed{
-  filter: grayscale(50%);
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
 .bet-container-winning{
-  scale: 1.1;
-  filter: grayscale(0%);
+  scale: 1.05;
+  /* filter: grayscale(0%); */
+  opacity: 1;
   transition: 0.5s;
 }
 

@@ -224,7 +224,7 @@ const betReveal = (color, number) =>{
 const betReset = () =>{ //stage 2
   isBettable = false
   io.emit("roulette-status", betResetMessageObject)
-  setTimeout(betReady, 1000)
+  setTimeout(betReady, 1000) //tu było wcześniej 1000, chyba nic nie zjebałem
   placedBets = []
 }
 

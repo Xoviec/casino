@@ -350,7 +350,7 @@ console.log(betHistoryList)
           <div
               style={{
                 backgroundPosition: '-' + bgPos + 'px',
-                transition: rouletteStage === 1 ? '5s' : '0.4s', // Używamy operatora trójargumentowego
+                transition: rouletteStage === 1 ? '5s' : '1s', // wcześniej zamiast 1s było 0.4s
               }}
               className={`roulette ${!isBettable && `roulette-active`}`}
             />
