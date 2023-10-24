@@ -8,12 +8,13 @@ import { Login } from './components/Login';
 import { useSelector, useDispatch } from 'react-redux'
 import { incrementByAmount, setAmmount } from './features/balance/balanceSlice';
 import { setNickname } from './features/nickname/nicknameSlice';
-
+import { v4 as uuidv4 } from 'uuid';
 import { Nickname } from './features/nickname/nickname';
 import { BalanceShow } from './features/balance/balanceShow';
 const { io } = require("socket.io-client");
-const socket = io("http://localhost:8000")
-
+// const socket = io("http://localhost:8000")
+const URL = "http://localhost:8000";
+const socket = io(URL, { autoConnect: false });
 
 function App({client}) {
 
@@ -75,19 +76,21 @@ function App({client}) {
     event.target.number.value = ''
   }
 
-console.log(betHistoryList)
-
 useEffect(()=>{
-  const localStorageInfo = localStorage.getItem('roulette-user-info');
 
-  if(localStorageInfo){
+  
+  const localStorageInfo = JSON.parse(localStorage.getItem('roulette-user-info')) 
+
+  if(localStorageInfo?.userID){
     setIsLogged(true)
-    setUserID(JSON.parse(localStorageInfo).userID)
-    dispatch(setNickname(JSON.parse(localStorageInfo).nickName))
-    dispatch(setAmmount(((JSON.parse(localStorageInfo).balance))))
+    setUserID((localStorageInfo).userID)
+    dispatch(setNickname((localStorageInfo).nickName))
+    dispatch(setAmmount((((localStorageInfo).balance))))
     
 
-    setBalance(JSON.parse(localStorageInfo).balance)
+    setBalance((localStorageInfo).balance)
+    socket.connect();
+
   }
   else{
     setIsLogged(false)
@@ -96,20 +99,39 @@ useEffect(()=>{
 
   useEffect(() => {
 
-    function onConnect(){
+    const localStorageInfo = JSON.parse(localStorage.getItem('roulette-user-info')) 
 
-      const storedUserInfo = JSON.parse(localStorage.getItem('roulette-user-info')) || {};
-      storedUserInfo.userID ? setUserID(storedUserInfo.userID) : setUserID(socket.id)
+    const userID = localStorageInfo?.userID
+
+    function onConnect(){
 
 
     }
 
     function handlePreviousBets(data) {
       setPlacedBets(data.placedBets);
+
+      
+
+      const userBets = (data.placedBets.find((xd)=>xd.userID===userID))
+
+      if(userBets){
+        let updatedPlayerBetObj={
+          Red: userBets?.bets.Red,
+          Black: userBets?.bets.Black,
+          Green: userBets?.bets.Green
+        }
+        
+        console.log(updatedPlayerBetObj)
+        setPlayerBetObject(updatedPlayerBetObj)
+      }
+
       setIsBettable(data.isBettable);
     }
   
+    
     function handleBetReveal(data) {
+
       setWinColor(data.color);
       setWinNumber(data.number);
       const latestBet = {
@@ -148,19 +170,13 @@ useEffect(()=>{
   
     function handlePrizeWin(data) {
 
-
-      console.log(data)
-
-      const index = data.findIndex(item => item[0] === socket.id);
-
-      console.log(index)
-
+      const localStorageInfo = JSON.parse(localStorage.getItem('roulette-user-info')) 
+      const index = data.findIndex(item => item[0] === localStorageInfo?.userID);
       if (data[index]) {
         setBalance(balanceRef.current + data[index][1])
         const storedUserInfo = JSON.parse(localStorage.getItem('roulette-user-info')) || {};
         storedUserInfo.balance = (balanceRef.current + data[index][1]); // Ustaw wartość początkową dla pola balance
         localStorage.setItem('roulette-user-info', JSON.stringify(storedUserInfo));
-
         dispatch(incrementByAmount(Number(data[index][1])))
       }
     }
@@ -176,18 +192,12 @@ useEffect(()=>{
       handleAddNumber(data.message, data.userID, data.nickName);
     }
 
+
     function handleGetRouletteStartingTime(data){
-      console.log("data teraz:", Date.now())
-      console.log("bet o:", data)
       const actualTimeStr = Date.now().toString()
       const actualTime = Number(actualTimeStr.slice(0, -3));
       let nextBetSecondsStr = data.toString()
       let nextBetSeconds = Number(nextBetSecondsStr.slice(0,-3))
-
-      console.log(nextBetSeconds-actualTime)
-
-
-
       let remainingBetTime = (nextBetSeconds-actualTime)
 
       if(remainingBetTime>0){
@@ -230,29 +240,28 @@ useEffect(()=>{
     };
   }, []);
 
-
-  
-
-
-
   useEffect(()=>{
     balanceRef.current = balance
   },[balance])
 
-
-
   const handleUpdatePlacedBets = (userID, bets, nick) => {
     const betObj = {
       userID: userID,
+      nickName: nick,
       bets: bets,
-      nickName: nick
     };
-  
+
     setPlacedBets((prevPlacedBets) => {
-      const existingBetIndex = prevPlacedBets.findIndex(betDetails => betDetails.userID === userID);
+      
+      const existingBetIndex = prevPlacedBets.findIndex((betDetails) => betDetails.userID===userID);
   
+      console.log(existingBetIndex)
+
+      console.log(...prevPlacedBets)
+
       if (existingBetIndex !== -1) {
-        const updatedBet = Object.assign({}, prevPlacedBets[existingBetIndex], betObj);
+        const updatedBet = Object.assign(prevPlacedBets[existingBetIndex], betObj);
+        console.log('moze tu bedzie', updatedBet)
         const updatedPlacedBets = [...prevPlacedBets];
         updatedPlacedBets[existingBetIndex] = updatedBet;
         return updatedPlacedBets;
@@ -323,11 +332,14 @@ useEffect(()=>{
 
     dispatch(setNickname(e.target[0].value))
 
+    const newID = uuidv4()
+
+    setUserID(newID)
 
     const localStorageInfo = {
       nickName: e.target[0].value,
       balance: 1000,
-      userID: userID
+      userID: newID
     };
 
     setBalance(1000)
@@ -336,6 +348,7 @@ useEffect(()=>{
 
 
     setIsLogged(true)
+    socket.connect();
 
   }
 
@@ -371,7 +384,6 @@ useEffect(()=>{
             ))
           }
           <p className='prev-rolls'>PREVIOUS ROLLS</p>
-          <p>{userID}</p>
         </div>
 
         {/* <div className={`betting ${isBettable ? `bettable` : "bettablent"}`}></div> */}
