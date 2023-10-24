@@ -3,6 +3,7 @@ import './App.css';
 import { useEffect, useState, useRef, Component } from 'react';
 import React from 'react';
 import { Bets } from './components/Bets';
+import { BetShow} from './components/BetShow';
 import { Chatbar } from './components/Chatbar';
 import { Login } from './components/Login';
 import { useSelector, useDispatch } from 'react-redux'
@@ -401,9 +402,18 @@ useEffect(()=>{
         </div>
 
         <div className='placed-bets-container'>
-          <Bets color='Red' placeBet={placeBet} isBettable={isBettable} winColor={winColor} placedBets={placedBets}/>
-          <Bets color='Green' placeBet={placeBet} isBettable={isBettable} winColor={winColor} placedBets={placedBets}/>
-          <Bets color='Black' placeBet={placeBet} isBettable={isBettable} winColor={winColor} placedBets={placedBets}/>
+          <div className="bets">
+            <Bets color='Red' placeBet={placeBet} isBettable={isBettable} winColor={winColor} placedBets={placedBets}/>
+            <Bets color='Green' placeBet={placeBet} isBettable={isBettable} winColor={winColor} placedBets={placedBets}/>
+            <Bets color='Black' placeBet={placeBet} isBettable={isBettable} winColor={winColor} placedBets={placedBets}/>
+          </div>
+          <div className="bets-show">
+            <BetShow color='Red' placeBet={placeBet} isBettable={isBettable} winColor={winColor} placedBets={placedBets}/>
+            <BetShow color='Green' placeBet={placeBet} isBettable={isBettable} winColor={winColor} placedBets={placedBets}/>
+            <BetShow color='Black' placeBet={placeBet} isBettable={isBettable} winColor={winColor} placedBets={placedBets}/>
+          </div>
+
+
         </div>
       </div>
     </div>

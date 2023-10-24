@@ -20,7 +20,10 @@ export const Chatbar = ({numberList, userID, handleShareNumber}) =>{
             </button>
 
             <div ref={ref} className='chat-messages'>
-                {numberList.map((number) => (
+                <div key='welcome-message' className='stranger single-message'>
+                    <p className='message-user-id'>Server</p>
+                    <p className='message-content'>Welcome!</p>
+                </div>                {numberList.map((number) => (
                 <div  key={number.userID} className={`${number.userID===userID ? 'user' : 'stranger'} single-message`}>
                     <p className='message-user-id'>{number.nickName}</p>
                     <p className='message-content'>{number.number}</p>
@@ -29,7 +32,7 @@ export const Chatbar = ({numberList, userID, handleShareNumber}) =>{
             </div>
             <div className='chat-bottom'>
                 <form onSubmit={handleShareNumber}>
-                    <input type="text" name='number' autoComplete="off" placeholder='...' />
+                    <input type="text" name='number' autoComplete="off" placeholder='Type something' />
                     <button type='submit' >Send</button>
                 </form>
             </div>

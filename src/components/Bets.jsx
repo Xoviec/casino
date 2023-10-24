@@ -26,39 +26,6 @@ export const Bets = ({color, placedBets, placeBet, isBettable, winColor}) =>{
     
                 </div>
             </label>
-            <div className="bet-bottom-border">
-                <div className="bet-info ">
-                    <p>
-                        {betsPerColor.length} Bets Total
-                    </p>
-                    <p>
-                    {
-                        winColor === color ? `+${totalBetColorSum * multiplier}$` :
-                        (winColor ? `-${totalBetColorSum}$` :
-                        `${totalBetColorSum}$`)
-                    }
-                    </p>
-                </div>
-                <div className="bet-section">
-                    {
-                        placedBets?.map((player)=>(
-                            player.bets[color] > 0 &&
-                            <div className="single-bet">
-                                <p>{player.nickName}</p>
-                                <p>    
-                                    {
-                                        winColor === color ? `+${player.bets[color] * multiplier}$` :
-                                        (winColor ? `-${player.bets[color]}$` :
-                                        `${player.bets[color]}$`)
-                                    }
-                                </p>
-                            </div>
-                        ))
-                    }
-                </div>
-            </div>
-
-    
         </div>
     )
 }
