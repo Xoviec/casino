@@ -77,10 +77,31 @@ function App({client}) {
 
 console.log(betHistoryList)
 
+useEffect(()=>{
+  const localStorageInfo = localStorage.getItem('roulette-user-info');
+
+  if(localStorageInfo){
+    setIsLogged(true)
+    setUserID(JSON.parse(localStorageInfo).userID)
+    dispatch(setNickname(JSON.parse(localStorageInfo).nickName))
+    dispatch(setAmmount(((JSON.parse(localStorageInfo).balance))))
+    
+
+    setBalance(JSON.parse(localStorageInfo).balance)
+  }
+  else{
+    setIsLogged(false)
+  }
+}, [])
+
   useEffect(() => {
 
     function onConnect(){
-      (!userID || isLogged) && setUserID(socket.id)
+
+      const storedUserInfo = JSON.parse(localStorage.getItem('roulette-user-info')) || {};
+      storedUserInfo.userID ? setUserID(storedUserInfo.userID) : setUserID(socket.id)
+
+
     }
 
     function handlePreviousBets(data) {
@@ -209,22 +230,7 @@ console.log(betHistoryList)
     };
   }, []);
 
-  useEffect(()=>{
-    const localStorageInfo = localStorage.getItem('roulette-user-info');
 
-    if(localStorageInfo){
-      setIsLogged(true)
-      setUserID(JSON.parse(localStorageInfo).userID)
-      dispatch(setNickname(JSON.parse(localStorageInfo).nickName))
-      dispatch(setAmmount(((JSON.parse(localStorageInfo).balance))))
-      
-
-      setBalance(JSON.parse(localStorageInfo).balance)
-    }
-    else{
-      setIsLogged(false)
-    }
-  }, [])
   
 
 
@@ -365,6 +371,7 @@ console.log(betHistoryList)
             ))
           }
           <p className='prev-rolls'>PREVIOUS ROLLS</p>
+          <p>{userID}</p>
         </div>
 
         {/* <div className={`betting ${isBettable ? `bettable` : "bettablent"}`}></div> */}
