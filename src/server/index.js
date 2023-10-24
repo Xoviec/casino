@@ -168,6 +168,7 @@ io.on("connection", (socket) => {
   socket.on("send_player_bet", (data)=>{
 
     updatePlacedBets(data)
+    io.emit("get_previous_bets", { placedBets, isBettable }); // do każdego idzie
     io.emit("receive_player_bet", data) //wysyła do każdego
   })
 

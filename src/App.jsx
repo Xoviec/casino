@@ -355,9 +355,7 @@ useEffect(()=>{
   return (
     <div className="App">
       {!isLogged && <Login handleStartGame={handleStartGame}/>}
-      <div className='chat'>
-        <Chatbar numberList={numberList} userID={userID} handleShareNumber={handleShareNumber}/>
-      </div>
+      <Chatbar numberList={numberList} userID={userID} handleShareNumber={handleShareNumber}/>
       <div className="main-container">
         <div className={`roulette-container `}>
           <div className={`controller ${isBettable && `hidden`}`}/>
