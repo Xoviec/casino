@@ -72,6 +72,7 @@ input[type=number] {
   justify-content: end;
   background-color: #282c34;
   width: 18rem;
+  max-width: 80%;
   position: relative;
   height: calc(100vh - 5rem);
 
@@ -307,8 +308,17 @@ input[type=number] {
   width: 30%;
   overflow: hidden;
   position: relative;
-  border-radius: 0.4rem 0.4rem 0.3rem 0.3rem;
-  transition: 0.5s;
+  transition: opacity 0.5s;
+
+}
+
+.bet-container-top{
+  border-radius: 0.4rem 0.4rem 0rem 0rem;
+
+}
+
+.bet-container-bottom{
+  border-radius: 0rem 0rem 0.3rem 0.3rem;
 
 }
 
@@ -393,7 +403,7 @@ input[type=number] {
   scale: 1.05;
   /* filter: grayscale(0%); */
   opacity: 1;
-  transition: 0.5s;
+  transition: opacity 0.5s;
 }
 
 
@@ -537,7 +547,6 @@ input[type=number] {
   align-items: center;
   flex-direction: row-reverse;
   gap: 0.2rem;
-  margin-bottom: 0.5rem;
 }
 
 
@@ -547,6 +556,12 @@ input[type=number] {
   align-items: center;
   height: 1.5rem;
   width: 1.5rem;
+}
+
+.previous-rolls{
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .prev-rolls{
@@ -639,13 +654,14 @@ input[type=number] {
   border-radius: 0.125rem;
   text-transform: uppercase;
   font-weight: 600;
-  transition: 175ms cubic-bezier(.785, .135, .15, .86);
   cursor: pointer;
 }
 
 .quick-bets button:hover{
   background-color: rgb(55 58 71);
   color: rgb(192 192 192);
+  transition: 175ms cubic-bezier(.785, .135, .15, .86);
+
 }
 
 .coins{
@@ -777,6 +793,11 @@ nav{
     flex-grow: 1;
     justify-content: space-around;
   } */
+  .bet-container{
+    border-radius: 0.4rem 0.4rem 0.3rem 0.3rem;
+    width: 100%;
+
+  }
 
   .bets{
     gap: 1rem;
@@ -786,9 +807,6 @@ nav{
   .bets-show{
     gap: 1rem;
     flex-direction: column;
-  }
-  .bet-container{
-    width: 100%;
   }
 
   .bet-container-winning{
@@ -855,6 +873,15 @@ nav{
     flex-grow: 1;
   }
 
+  .previous-rolls{
+    flex-direction: column;
+    margin-bottom: 1rem;
+  }
+
+  .prev-rolls{
+
+    margin: 0 0 0.5rem 0;
+  }
 
 
 

@@ -12,7 +12,7 @@ export const BetShow = ({color, placedBets, placeBet, isBettable, winColor}) =>{
     const multiplier = (color===`Green` ? 14 : 2)
 
     return(
-        <div className={`bet-container ${winColor === color && `bet-container-winning`} ${!isBettable && 'bets-closed' }`}>
+        <div className={`bet-container bet-container-bottom ${winColor === color && `bet-container-winning`} ${!isBettable && 'bets-closed' }`}>
             <div className="bet-bottom-border">
                 <div className="bet-info ">
                     <p>

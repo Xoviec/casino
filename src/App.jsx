@@ -375,16 +375,19 @@ useEffect(()=>{
             </div>
         </div>
 
-        <div className="bet-history-container">
-          {
-            betHistoryList.slice(-10).map((bet)=>(
-                <div className={`bet-history ${bet.color}`}>
-                  <p>{bet.number}</p>
-                </div>
-            ))
-          }
+        <div className="previous-rolls">
           <p className='prev-rolls'>PREVIOUS ROLLS</p>
+          <div className="bet-history-container">
+            {
+              betHistoryList.slice(-10).map((bet)=>(
+                  <div className={`bet-history ${bet.color}`}>
+                    <p>{bet.number}</p>
+                  </div>
+              ))
+            }
+          </div>
         </div>
+      
 
         {/* <div className={`betting ${isBettable ? `bettable` : "bettablent"}`}></div> */}
         {/* <div className={`betting-status ${isBettable ? `Green` : "Red"}`}>{`${isBettable ? `Bets open` : "Bets closed"}`}</div> */}

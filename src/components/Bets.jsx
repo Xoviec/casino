@@ -12,7 +12,7 @@ export const Bets = ({color, placedBets, placeBet, isBettable, winColor}) =>{
     const multiplier = (color===`Green` ? 14 : 2)
 
     return(
-        <div className={`bet-container ${winColor === color && `bet-container-winning`} ${!isBettable && 'bets-closed' }`}>
+        <div className={`bet-container bet-container-top ${winColor === color && `bet-container-winning`} ${!isBettable && 'bets-closed' }`}>
             <button name={color} id={color} onClick={placeBet} className={`btn-hidden bet-color-header bet-header-${color} `}>{color}</button>
             <label htmlFor={color} name={color}>
                 <div className={`bet-btn-main bet-header-${color}/  ${winColor === color && `win-effect`}`}>
