@@ -371,7 +371,8 @@ useEffect(()=>{
                 transition: rouletteStage === 1 ? '5s' : '1s', // wcześniej zamiast 1s było 0.4s
               }}
               className={`roulette ${!isBettable && `roulette-active`}`}
-            />
+            >
+            </div>
         </div>
 
         <div className="bet-history-container">
@@ -388,8 +389,10 @@ useEffect(()=>{
         {/* <div className={`betting ${isBettable ? `bettable` : "bettablent"}`}></div> */}
         {/* <div className={`betting-status ${isBettable ? `Green` : "Red"}`}>{`${isBettable ? `Bets open` : "Bets closed"}`}</div> */}
         <div className="input-box">
-          <div className="coins"></div>
-          <input className='bet-input' type="number" placeholder='Enter bet ammount' onChange={getBetValue} value={betInputValue} min='0'/>
+          <div className="input-ammount">
+            <div className="coins"></div>
+            <input className='bet-input' type="number" placeholder='Enter bet ammount' onChange={getBetValue} value={betInputValue} min='0'/>
+          </div>
           <div className="quick-bets">
             <button onClick={(()=>setBetInputValue(0))}>Clear</button>
             <button onClick={(()=>setBetInputValue((prev)=>prev+1))}>+1</button>

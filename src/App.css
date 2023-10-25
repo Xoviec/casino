@@ -2,6 +2,7 @@
 body{
   font-family: 'Roboto', sans-serif;
   font-weight: 400;
+  background-color: #1a1c24;
 }
 
 
@@ -24,7 +25,7 @@ input[type=number] {
   font-size: medium;
   color: rgb(192 192 192);
   width: 100%;
-  background-color: #1a1c24;
+  /* background-color: #1a1c24; */
 }
 
 
@@ -241,10 +242,11 @@ input[type=number] {
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: calc(100vh - 5rem);
+  /* height: calc(100vh - 5rem); */
   width: 80%;
   padding-left: 1.125rem;
   padding-right: 1.125rem;
+  overflow: hidden;
 }
 
 .betting{
@@ -282,7 +284,7 @@ input[type=number] {
 
   display: flex;
   flex-direction: column;
-  padding: 3rem;
+  padding: 1rem;
   justify-content: space-around;
 }
 
@@ -436,11 +438,12 @@ input[type=number] {
 }
 
 .roulette-container{
+  
   position: relative;
   width: 560px;
   height: 70px;
   transition: 0.3s;
-  margin-bottom: 1rem;
+  margin: 2rem 0 1rem 0;
 
 }
 
@@ -490,10 +493,15 @@ input[type=number] {
   position: absolute;
   left: 0;
   top: 0;
-  width: 560px;
+  /* width: 560px; */
+  width: 100%;
   height: 70px;
   overflow: hidden;
   background: url('./images/ruletka.png') 0 0 repeat;
+  /* background-size: auto 70px; */
+  /* background-image: url('./images/ruletka.png');
+  background-repeat: repeat-x;
+  background-size: auto; */
   background-position: 35px;
   transition: 5s;
   opacity: 0.3;
@@ -502,6 +510,7 @@ input[type=number] {
   transition-timing-function: cubic-bezier(0.12, 1.02, 1, 0.99);
   
 }
+
 
 .roulette::before{
   content: ' ';
@@ -528,6 +537,7 @@ input[type=number] {
   align-items: center;
   flex-direction: row-reverse;
   gap: 0.2rem;
+  margin-bottom: 0.5rem;
 }
 
 
@@ -535,8 +545,8 @@ input[type=number] {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 2rem;
-  width: 2rem;
+  height: 1.5rem;
+  width: 1.5rem;
 }
 
 .prev-rolls{
@@ -594,6 +604,11 @@ input[type=number] {
   background-color: rgb(20 20 25);
   border: 1px solid rgb(73, 76, 93);
   border-radius: 0.25rem;
+}
+
+.input-ammount{
+  display: flex;
+
 }
 
 .bet-input{
@@ -752,14 +767,16 @@ nav{
 }
 
 @media only screen and (max-width: 1050px) {
-  .main-container {
-    width: 100%;
+
+
+  /* .nav-title{
+    justify-content: space-between;
   }
 
-  .placed-bets-container{
-    /* width: 50rem; */
-    width: 100%;
-  }
+  .user-dock{
+    flex-grow: 1;
+    justify-content: space-around;
+  } */
 
   .bets{
     gap: 1rem;
@@ -784,13 +801,70 @@ nav{
 
   .bet-place-text{
     flex-direction: column;
-    gap: 1rem;
+    gap: 20%;
+  }
+
+  .input-box{
+    flex-direction: column;
+    border: none;
+    background-color: transparent;
+    width: 100%;
+  }
+  .input-ammount{
+    background-color: rgb(20 20 25);
+    border: 1px solid rgb(73, 76, 93);
+  }
+  
+  .bet-input{
+    flex-grow: 1;
+  }
+  
+  .quick-bets{
+    padding: 5px 0 5px 0;
+    border: none;
+  }
+  
+  .quick-bets button{
+    height: 2.5rem;
+    width: 100%;
+  }
+
+
+  .bet-multiplier{
+    font-size: .6875rem;
+    font-weight: 900;
+    color: #9293a6;
+  }
+
+  .bet-place{
+    font-size: .6875rem;
+    font-weight: 700;
+    color: #dcdcdc;
   }
 }
 
 @media only screen and (max-width: 625px) {
 
-.input-box{
-  flex-direction: column;
-}
+  .quick-bets{
+    flex-wrap: wrap;
+  }
+
+  .quick-bets button{
+    min-width: 10%;
+    width: 20%;
+    flex-grow: 1;
+  }
+
+
+
+
+  .nav-title{
+    display: none;
+  }
+
+  .user-dock{
+    width: 100%;
+    justify-content: space-between;
+  }
+
 }
