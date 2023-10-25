@@ -23,7 +23,6 @@ export const Bets = ({color, placedBets, placeBet, isBettable, winColor}) =>{
                             Win {`${color === 'Green' ? '14x' : '2x'}`}
                         </p>
                     </div>
-    
                 </div>
             </label>
         </div>
