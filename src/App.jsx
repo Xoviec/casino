@@ -38,6 +38,7 @@ function App({client}) {
   const [isLogged, setIsLogged] = useState(true)
   const [localStorageInfo, setLocalStorageInfo] = useState({})
   const [timer, setTimer] = useState()
+  const [isChatActive, setIsChatActive] = useState(false)
   const nick = useSelector((state) => state.nickname.value)
 
 
@@ -54,6 +55,10 @@ function App({client}) {
     while(timer>0){
       setTimer((prev)=>prev-1)
     }
+  }
+
+  const handleChangeActiveChat = () =>{
+    setIsChatActive((prev)=>!prev)
   }
 
 
@@ -356,8 +361,8 @@ useEffect(()=>{
   return (
     <div className="App">
       {!isLogged && <Login handleStartGame={handleStartGame}/>}
-      <Chatbar numberList={numberList} userID={userID} handleShareNumber={handleShareNumber}/>
-      <div className="main-container">
+      <Chatbar numberList={numberList} userID={userID} handleShareNumber={handleShareNumber} isChatActive={isChatActive} handleChangeActiveChat={handleChangeActiveChat}/>
+      <div className={`main-container ${isChatActive ? `chat-padding` : ''}`}>
         <div className={`roulette-container `}>
           <div className={`controller ${isBettable && `hidden`}`}/>
           <div className={`timer ${!isBettable && `hidden`}`}>

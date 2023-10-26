@@ -2,9 +2,8 @@ import {useRef, useEffect, useState} from 'react';
 import arrow from '../images/arrow.png'
 
 
-export const Chatbar = ({numberList, userID, handleShareNumber}) =>{
+export const Chatbar = ({numberList, userID, handleShareNumber, isChatActive, handleChangeActiveChat}) =>{
 
-    const [isChatActive, setIsChatActive] = useState(true)
 
 
     const ref = useRef()
@@ -15,7 +14,7 @@ export const Chatbar = ({numberList, userID, handleShareNumber}) =>{
     
     return(
         <div className={`chat-window ${isChatActive ? `chat-open` : null}`}>
-            <button className='chat-toggle' type='button' onClick={()=>setIsChatActive(prev=>!prev)}>{isChatActive ? `` : ``}
+            <button className='chat-toggle' type='button' onClick={handleChangeActiveChat}>{isChatActive ? `` : ``}
                 <img className='arrow' src={arrow} alt="" />
             </button>
 
