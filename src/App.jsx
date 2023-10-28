@@ -12,6 +12,7 @@ import { setNickname } from './features/nickname/nicknameSlice';
 import { v4 as uuidv4 } from 'uuid';
 import { Nickname } from './features/nickname/nickname';
 import { BalanceShow } from './features/balance/balanceShow';
+import { AccordionComponent } from './shared/Accordion'
 const { io } = require("socket.io-client");
 // const socket = io("http://localhost:8000")
 const URL = "http://localhost:8000";
@@ -423,7 +424,7 @@ useEffect(()=>{
             <BetShow color='Green' placeBet={placeBet} isBettable={isBettable} winColor={winColor} placedBets={placedBets}/>
             <BetShow color='Black' placeBet={placeBet} isBettable={isBettable} winColor={winColor} placedBets={placedBets}/>
           </div>
-
+          <AccordionComponent color='Red' placeBet={placeBet} isBettable={isBettable} winColor={winColor} placedBets={placedBets}/>
 
         </div>
       </div>
