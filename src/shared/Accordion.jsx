@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState } from 'react';
 import * as Accordion from '@radix-ui/react-accordion';
 import classNames from 'classnames';
 import { ChevronDownIcon } from '@radix-ui/react-icons';
@@ -6,6 +7,34 @@ import './Accordion.css';
 import '../App.css'
 
 export const AccordionComponent = ({color, placedBets, placeBet, isBettable, winColor}) => {
+
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 1050);
+  const [accordionOpener, setAccordionOpener] = useState(window.innerWidth <= 1050 ? 0 : 1)
+
+  const handleChangeAccordionState = () =>{
+    if(accordionOpener===0){
+
+      setAccordionOpener(1)
+    }
+    else{
+      setAccordionOpener(0)
+    }
+  }
+
+
+  const handleResize = () => {
+    setIsMobile(window.innerWidth <= 1050);
+    if(window.innerWidth <= 1050){
+      setAccordionOpener(0)
+    }
+    else{
+      setAccordionOpener(1)
+    }
+  };
+
+  console.log(isMobile)
+
+  window.addEventListener('resize', handleResize);
 
 
     placedBets.sort((a, b) => b.bets[color] - a.bets[color]);
@@ -18,11 +47,11 @@ export const AccordionComponent = ({color, placedBets, placeBet, isBettable, win
     const multiplier = (color===`Green` ? 14 : 2)
 
     return(  
-    <Accordion.Root className="AccordionRoot " type="single" defaultValue="item-1" collapsible disabled='true'>
+    <Accordion.Root className="AccordionRoot " value={`item-${accordionOpener}`} type="single" disabled={isMobile ? false : true}>
         <Accordion.Item className="AccordionItem" value="item-1">
-        <AccordionTrigger>
+        <AccordionTrigger onClick={handleChangeAccordionState}>
                 <p>
-                    {betsPerColor.length} Bets Total
+                    {betsPerColor.length} Bets Total 
                 </p>
                 <p>
                 {

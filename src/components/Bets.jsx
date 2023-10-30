@@ -5,6 +5,7 @@ export const Bets = ({color, placedBets, placeBet, isBettable, winColor}) =>{
     placedBets.sort((a, b) => b.bets[color] - a.bets[color]);
 
 
+
     const betsPerColor = placedBets.filter(item => item.bets[color] > 0);
 
     const totalBetColorSum = placedBets.reduce((acc, item) => acc + item.bets[color], 0);
