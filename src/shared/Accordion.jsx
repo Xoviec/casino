@@ -50,8 +50,9 @@ export const AccordionComponent = ({color, placedBets, placeBet, isBettable, win
     <Accordion.Root className="AccordionRoot " value={`item-${accordionOpener}`} type="single" disabled={isMobile ? false : true}>
         <Accordion.Item className="AccordionItem" value="item-1">
         <AccordionTrigger onClick={handleChangeAccordionState}>
-                <p>
-                    {betsPerColor.length} Bets Total 
+          <div className="bet-summary-container">
+            <p>
+                {betsPerColor.length} Bets Total 
                 </p>
                 <p>
                 {
@@ -59,32 +60,27 @@ export const AccordionComponent = ({color, placedBets, placeBet, isBettable, win
                     (winColor ? `-${totalBetColorSum}$` :
                     `${totalBetColorSum}$`)
                 }
-                </p>
+            </p>
+          </div>
+
         </AccordionTrigger>
         {
-        placedBets?.length > 0 ?
-            
-        <AccordionContent>
-            {
-                placedBets?.map((player)=>(
-                    player.bets[color] > 0 &&
-                    <div className="single-bet">
-                        <p>{player.nickName}</p>
-                        <p>    
-                            {
-                                winColor === color ? `+${player.bets[color] * multiplier}$` :
-                                (winColor ? `-${player.bets[color]}$` :
-                                `${player.bets[color]}$`)
-                            }
-                        </p>
-                    </div>
-                ))
-            }
-        </AccordionContent> 
-        :
-        null
+            placedBets?.map((player)=>(
+              player.bets[color] > 0 &&
+                <AccordionContent>
+                          <div className="single-bet">
+                              <p>{player.nickName}</p>
+                              <p>    
+                                  {
+                                      winColor === color ? `+${player.bets[color] * multiplier}$` :
+                                      (winColor ? `-${player.bets[color]}$` :
+                                      `${player.bets[color]}$`)
+                                  }
+                              </p>
+                          </div>
+              </AccordionContent> 
+            ))
         }
-  
         </Accordion.Item>
     </Accordion.Root>
     )
