@@ -155,7 +155,7 @@ export const AccordionComponent = ({color, placedBets, placeBet, isBettable, win
     
 
 
-    console.log(playersArray) //for testing more bets
+    // console.log(playersArray) //for testing more bets
     console.log(placedBets)
 
     return(  
@@ -163,7 +163,10 @@ export const AccordionComponent = ({color, placedBets, placeBet, isBettable, win
         <Accordion.Item className="AccordionItem" value="item-1">
         <AccordionTrigger onClick={handleChangeAccordionState}>
           <div className="bet-summary-container">
-            <p>
+          <div className={`color-circle bet-header-${color} `}/>
+
+            <p className='bets-total-text'>
+              
                 {betsPerColor.length} Bets Total 
                 </p>
                 <p>
@@ -180,12 +183,13 @@ export const AccordionComponent = ({color, placedBets, placeBet, isBettable, win
             placedBets?.slice(0,10).filter((player)=>player.bets[color]).map((player, index)=>(
                 <AccordionContent>
                           <div className={`single-bet ${index===9 ? 'last-el': ''}`}>
+                            
                               <p>{player.nickName}</p>
                               <p>    
                                   {
-                                      winColor === color ? `+${player.bets[color] * multiplier}$` :
-                                      (winColor ? `-${player.bets[color]}$` :
-                                      `${player.bets[color]}$`)
+                                    winColor === color ? `+${player.bets[color] * multiplier}$` :
+                                    (winColor ? `-${player.bets[color]}$` :
+                                    `${player.bets[color]}$`)
                                   }
                               </p>
                           </div>
