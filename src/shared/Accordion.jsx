@@ -155,7 +155,7 @@ export const AccordionComponent = ({color, placedBets, placeBet, isBettable, win
     
 
 
-    console.log(playersArray)
+    console.log(playersArray) //for testing more bets
     console.log(placedBets)
 
     return(  
@@ -177,10 +177,9 @@ export const AccordionComponent = ({color, placedBets, placeBet, isBettable, win
 
         </AccordionTrigger>
         {
-            placedBets?.map((player)=>(
-              player.bets[color] > 0 &&
+            placedBets?.slice(0,10).filter((player)=>player.bets[color]).map((player, index)=>(
                 <AccordionContent>
-                          <div className="single-bet">
+                          <div className={`single-bet ${index===9 ? 'last-el': ''}`}>
                               <p>{player.nickName}</p>
                               <p>    
                                   {
