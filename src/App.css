@@ -409,7 +409,7 @@ input[type=number] {
 }
 
 .bet-container-winning{
-  scale: 1.05;
+  /* scale: 1.05; */
   /* filter: grayscale(0%); */
   opacity: 1;
   transition: opacity 0.5s;
