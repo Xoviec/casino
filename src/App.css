@@ -706,6 +706,8 @@ nav{
   position: absolute;
   display: flex;
   justify-content: center;
+  left: 0;
+  top: 0;
   /* align-items: center; */
   width: 100vw;
   height: calc(100vh - 5rem);
@@ -714,6 +716,8 @@ nav{
 }
 
 .login-dialog container{
+  position: absolute;
+  /* left: 0; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -726,6 +730,8 @@ nav{
 
 .login-title{
   font-weight: 700;
+  font-size: 2rem;
+  color: rgb(192 192 192);
 }
 
 .login-form{
@@ -756,6 +762,7 @@ nav{
   border-radius: 0.25rem;
   color: white;
   cursor: pointer;
+  box-sizing: border-box;
 }
 
 .nick-box{
